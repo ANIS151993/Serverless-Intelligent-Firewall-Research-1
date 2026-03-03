@@ -129,7 +129,8 @@ pre.code-block{background:var(--code-bg);color:var(--code-fg);font-family:'Couri
 
 /* ── CHARTS ── */
 .chart-wrap{background:var(--white);border:1px solid var(--border);border-radius:6px;
-  padding:20px;margin:16px 0}
+  padding:16px;margin:16px 0;max-width:620px;margin-left:auto;margin-right:auto}
+.chart-wrap canvas{max-height:220px!important}
 .chart-title{font-size:11pt;font-weight:700;color:var(--h1-color);margin-bottom:12px}
 .chart-canvas{position:relative;height:280px}
 
@@ -271,7 +272,7 @@ pre.code-block{background:var(--code-bg);color:var(--code-fg);font-family:'Couri
   <div class="cover-authors">
     <p class="cover-author-name">Md Anisur Rahman Chowdhury</p>
     <p class="cover-author-id">STUDENT ID: 3195493</p>
-    <p class="cover-author-name">Hoang Nam Dang</p>
+    <p class="cover-author-name">Aishwarya</p>
     <p class="cover-author-id">STUDENT ID: 3214245</p>
   </div>
   <p class="cover-sub-text">This project is submitted to the Gannon University graduate faculty in<br/>partial fulfillment for the Master of Science degree in Computer and Information Science.</p>
@@ -615,7 +616,7 @@ cnn_model = Sequential([
   </table>
 
   <div class="chart-wrap">
-    <canvas id="rpt-barChart" height="320"></canvas>
+    <canvas id="rpt-barChart" height="200"></canvas>
     <p class="fig-cap">Figure 4.1 — Grouped bar chart comparing Accuracy, Precision, Recall, and F1-Score across SVM, Decision Tree, CNN, and LSTM (Proposed).</p>
   </div>
 
@@ -662,7 +663,7 @@ cnn_model = Sequential([
   </table>
 
   <div class="chart-wrap">
-    <canvas id="rpt-classChart" height="280"></canvas>
+    <canvas id="rpt-classChart" height="180"></canvas>
     <p class="fig-cap">Figure 4.5 — Per-class precision and recall for the LSTM model. All five traffic classes maintain precision and recall above 0.94, with DDoS and PortScan achieving near-perfect scores.</p>
   </div>
 
@@ -688,7 +689,7 @@ cnn_model = Sequential([
   </table>
 
   <div class="chart-wrap">
-    <canvas id="rpt-sotaChart" height="240"></canvas>
+    <canvas id="rpt-sotaChart" height="160"></canvas>
     <p class="fig-cap">Figure 4.7 — State-of-the-art accuracy comparison (horizontal bar chart). The proposed LSTM achieves 98.00%, surpassing all comparable IDS works including federated and hybrid approaches.</p>
   </div>
 
@@ -698,7 +699,7 @@ cnn_model = Sequential([
   <p class="body">Additionally, the model was evaluated for computational efficiency. Inference latency on AWS Lambda was measured at &lt;100 ms per flow classification under cold-start conditions and &lt;15 ms under warm execution, satisfying real-time network monitoring requirements.</p>
 
   <div class="chart-wrap">
-    <canvas id="rpt-radarChart" height="320"></canvas>
+    <canvas id="rpt-radarChart" height="200"></canvas>
     <p class="fig-cap">Figure 4.8 — Radar chart comparing LSTM vs CNN across 8 performance dimensions. LSTM dominates in all categories, with the most pronounced advantage in Recall and F1-Score metrics.</p>
   </div>
 </div>
