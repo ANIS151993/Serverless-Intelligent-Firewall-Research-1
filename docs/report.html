@@ -164,6 +164,52 @@ pre.code-block{background:var(--code-bg);color:var(--code-fg);font-family:'Couri
 .kpi-val{font-family:var(--font-head);font-size:22pt;font-weight:700;line-height:1}
 .kpi-lbl{font-size:9pt;opacity:.85;margin-top:4px}
 
+/* ── DOWNLOAD GATE MODAL ── */
+.dl-overlay{position:fixed;inset:0;z-index:9000;background:rgba(0,0,0,.65);
+  display:flex;align-items:center;justify-content:center;padding:16px;
+  backdrop-filter:blur(4px);animation:dlFadeIn .2s ease}
+.dl-hidden{display:none!important}
+@keyframes dlFadeIn{from{opacity:0}to{opacity:1}}
+.dl-modal{background:#fff;border-radius:12px;max-width:480px;width:100%;
+  padding:32px 30px 24px;box-shadow:0 20px 60px rgba(0,0,0,.35);
+  position:relative;animation:dlSlideUp .25s ease}
+@keyframes dlSlideUp{from{transform:translateY(24px);opacity:0}to{transform:translateY(0);opacity:1}}
+.dl-close{position:absolute;top:14px;right:16px;background:none;border:none;
+  font-size:22px;cursor:pointer;color:#888;line-height:1;padding:2px 6px}
+.dl-close:hover{color:#333}
+.dl-modal-header{text-align:center;margin-bottom:24px}
+.dl-lock-icon{font-size:36px;display:block;margin-bottom:8px}
+.dl-unlock-icon{font-size:48px;text-align:center;display:block;margin-bottom:8px}
+.dl-modal-title{font-family:var(--font-head);font-size:18pt;font-weight:700;
+  color:var(--h1-color);margin:0 0 6px}
+.dl-modal-sub{font-size:10.5pt;color:#666;margin:0}
+.dl-step{display:flex;flex-direction:column;gap:12px}
+.dl-step-badge{display:inline-block;background:var(--h1-color);color:#fff;
+  font-size:9pt;font-weight:700;padding:3px 10px;border-radius:20px;align-self:flex-start}
+.dl-step-title{font-size:13pt;font-weight:700;color:#1a1a1a;margin:0}
+.dl-step-desc{font-size:10.5pt;color:#555;margin:0;line-height:1.6}
+.dl-email-link{color:var(--h1-color);font-weight:600}
+.dl-btn-primary{display:inline-flex;align-items:center;justify-content:center;
+  background:var(--h1-color);color:#fff;border:none;border-radius:6px;
+  padding:10px 20px;font-size:11pt;font-weight:600;font-family:var(--font-body);
+  cursor:pointer;text-decoration:none;transition:background .2s;width:100%;text-align:center}
+.dl-btn-primary:hover{background:#2a4d78}
+.dl-btn-next{background:none;border:2px solid var(--h2-color);color:var(--h2-color);
+  border-radius:6px;padding:9px 20px;font-size:10.5pt;font-weight:600;
+  font-family:var(--font-body);cursor:pointer;transition:all .2s;width:100%}
+.dl-btn-next:hover{background:var(--h2-color);color:#fff}
+.dl-pass-wrap{display:flex;flex-direction:column;gap:8px}
+.dl-pass-input{width:100%;padding:10px 14px;border:2px solid var(--border);
+  border-radius:6px;font-size:11pt;font-family:var(--font-body);outline:none;
+  transition:border .2s}
+.dl-pass-input:focus{border-color:var(--h1-color)}
+.dl-pass-input.shake{animation:dlShake .4s ease}
+@keyframes dlShake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-6px)}40%,80%{transform:translateX(6px)}}
+.dl-pass-error{color:#dc2626;font-size:10pt;font-weight:600;text-align:center;margin:0}
+.dl-dots{display:flex;justify-content:center;gap:8px;margin-top:20px}
+.dl-dot{width:8px;height:8px;border-radius:50%;background:#d1d9e6;transition:background .3s}
+.dl-dot.active{background:var(--h1-color)}
+
 /* ── PRINT ── */
 @media print{
   #topbar,#sidebar{display:none!important}
@@ -189,8 +235,67 @@ pre.code-block{background:var(--code-bg);color:var(--code-fg);font-family:'Couri
 <div id="topbar">
   <span class="tb-title">Serverless Intelligent Firewall — Gannon University Research Report 2026</span>
   <div class="tb-actions">
-    <button onclick="window.print()" class="accent">&#128424; Print / Save PDF</button>
+    <button onclick="openDownloadGate()" class="accent">&#11015; Download PDF</button>
+    <button onclick="window.print()">&#128424; Print</button>
     <button onclick="window.location.href='index.html'">&#8592; Back to Portal</button>
+  </div>
+</div>
+
+<!-- ═══════════════ DOWNLOAD GATE MODAL ═══════════════ -->
+<div id="dl-overlay" class="dl-overlay dl-hidden" role="dialog" aria-modal="true" aria-label="Download access gate">
+  <div class="dl-modal">
+    <button class="dl-close" onclick="closeDownloadGate()" title="Close">&times;</button>
+    <div class="dl-modal-header">
+      <span class="dl-lock-icon">&#128274;</span>
+      <h2 class="dl-modal-title">Report Download Access</h2>
+      <p class="dl-modal-sub">Complete the steps below to download the full research report PDF.</p>
+    </div>
+
+    <!-- Step 1: GitHub -->
+    <div class="dl-step" id="dl-step1">
+      <div class="dl-step-badge">Step 1 of 3</div>
+      <h3 class="dl-step-title">&#128279; Follow on GitHub</h3>
+      <p class="dl-step-desc">Follow the author's GitHub profile to stay updated with the latest research releases.</p>
+      <a href="https://github.com/ANIS151993" target="_blank" class="dl-btn-primary">Open GitHub Profile &#8599;</a>
+      <button class="dl-btn-next" onclick="dlNextStep(2)">I have followed &rarr;</button>
+    </div>
+
+    <!-- Step 2: YouTube -->
+    <div class="dl-step dl-hidden" id="dl-step2">
+      <div class="dl-step-badge">Step 2 of 3</div>
+      <h3 class="dl-step-title">&#127909; Subscribe on YouTube</h3>
+      <p class="dl-step-desc">Subscribe to the research channel to access video explanations and future work updates.</p>
+      <a href="https://youtu.be/K04bOFbv204" target="_blank" class="dl-btn-primary">Open YouTube Channel &#8599;</a>
+      <button class="dl-btn-next" onclick="dlNextStep(3)">I have subscribed &rarr;</button>
+    </div>
+
+    <!-- Step 3: Password -->
+    <div class="dl-step dl-hidden" id="dl-step3">
+      <div class="dl-step-badge">Step 3 of 3</div>
+      <h3 class="dl-step-title">&#128273; Enter Access Password</h3>
+      <p class="dl-step-desc">Request your access password by emailing <a href="mailto:engr.aanis@gmail.com" class="dl-email-link">engr.aanis@gmail.com</a> with your GitHub username and YouTube confirmation.</p>
+      <div class="dl-pass-wrap">
+        <input type="password" id="dl-pass-input" class="dl-pass-input" placeholder="Enter access password…" onkeydown="if(event.key==='Enter') dlCheckPass()"/>
+        <button class="dl-btn-primary" onclick="dlCheckPass()">&#128275; Unlock &amp; Download</button>
+      </div>
+      <p id="dl-pass-error" class="dl-pass-error dl-hidden">Incorrect password. Please check your email and try again.</p>
+    </div>
+
+    <!-- Unlocked -->
+    <div class="dl-step dl-hidden" id="dl-step-unlocked">
+      <div class="dl-unlock-icon">&#9989;</div>
+      <h3 class="dl-step-title" style="color:#15803d">Access Granted!</h3>
+      <p class="dl-step-desc">Your download will start automatically. Thank you for supporting open research.</p>
+      <a id="dl-link" href="assets/papers/Serverless-Firewall-Report-Research-1.pdf" download class="dl-btn-primary">&#11015; Download Report PDF</a>
+      <button class="dl-btn-next" onclick="closeDownloadGate()">Close</button>
+    </div>
+
+    <!-- Step progress dots -->
+    <div class="dl-dots">
+      <span class="dl-dot active" id="dl-dot1"></span>
+      <span class="dl-dot" id="dl-dot2"></span>
+      <span class="dl-dot" id="dl-dot3"></span>
+    </div>
   </div>
 </div>
 
@@ -973,6 +1078,80 @@ def emit_metrics(result, latency_ms):
 ════════════════════════════════════════════════════════════════ -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <script>
+/* ── Download Gate ── */
+const DL_PASS_HASH = "5b484d8b2799daf74779ce686501847d4a08b5e917c1e8395e1da7f7e73bce0d";
+
+async function dlSha256(msg) {
+  const buf  = new TextEncoder().encode(msg);
+  const hash = await crypto.subtle.digest('SHA-256', buf);
+  return Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2,'0')).join('');
+}
+
+function openDownloadGate() {
+  document.getElementById('dl-overlay').classList.remove('dl-hidden');
+  document.body.style.overflow = 'hidden';
+  dlShowStep(1);
+}
+
+function closeDownloadGate() {
+  document.getElementById('dl-overlay').classList.add('dl-hidden');
+  document.body.style.overflow = '';
+  // reset to step 1 for next open
+  dlShowStep(1);
+  const err = document.getElementById('dl-pass-error');
+  if (err) err.classList.add('dl-hidden');
+  const inp = document.getElementById('dl-pass-input');
+  if (inp) { inp.value = ''; inp.classList.remove('shake'); }
+}
+
+function dlNextStep(n) { dlShowStep(n); }
+
+function dlShowStep(n) {
+  [1,2,3,'unlocked'].forEach(s => {
+    const el = document.getElementById('dl-step' + s);
+    if (el) el.classList.add('dl-hidden');
+  });
+  const target = document.getElementById('dl-step' + n);
+  if (target) target.classList.remove('dl-hidden');
+  // update dots (only for numbered steps)
+  [1,2,3].forEach(i => {
+    const dot = document.getElementById('dl-dot' + i);
+    if (dot) dot.classList.toggle('active', i === n);
+  });
+}
+
+async function dlCheckPass() {
+  const input = document.getElementById('dl-pass-input');
+  const error = document.getElementById('dl-pass-error');
+  const hash  = await dlSha256(input.value.trim());
+  if (hash === DL_PASS_HASH) {
+    error.classList.add('dl-hidden');
+    dlShowStep('unlocked');
+    // auto-trigger download
+    setTimeout(() => {
+      const link = document.getElementById('dl-link');
+      if (link) link.click();
+    }, 600);
+  } else {
+    error.classList.remove('dl-hidden');
+    input.classList.remove('shake');
+    void input.offsetWidth; // reflow to restart animation
+    input.classList.add('shake');
+    input.focus();
+  }
+}
+
+// Close on backdrop click
+document.addEventListener('click', function(e) {
+  const overlay = document.getElementById('dl-overlay');
+  if (e.target === overlay) closeDownloadGate();
+});
+
+// Close on Escape
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closeDownloadGate();
+});
+
 document.addEventListener('DOMContentLoaded', function() {
 
   /* ── Sidebar active-link on scroll ─────────────────────────── */
