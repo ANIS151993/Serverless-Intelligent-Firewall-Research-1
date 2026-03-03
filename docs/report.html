@@ -236,7 +236,6 @@ pre.code-block{background:var(--code-bg);color:var(--code-fg);font-family:'Couri
   <span class="tb-title">Serverless Intelligent Firewall — Gannon University Research Report 2026</span>
   <div class="tb-actions">
     <button onclick="openDownloadGate()" class="accent">&#11015; Download PDF</button>
-    <button onclick="window.print()">&#128424; Print</button>
     <button onclick="window.location.href='index.html'">&#8592; Back to Portal</button>
   </div>
 </div>
@@ -273,7 +272,11 @@ pre.code-block{background:var(--code-bg);color:var(--code-fg);font-family:'Couri
     <div class="dl-step dl-hidden" id="dl-step3">
       <div class="dl-step-badge">Step 3 of 3</div>
       <h3 class="dl-step-title">&#128273; Enter Access Password</h3>
-      <p class="dl-step-desc">Request your access password by emailing <a href="mailto:engr.aanis@gmail.com" class="dl-email-link">engr.aanis@gmail.com</a> with your GitHub username and YouTube confirmation.</p>
+      <p class="dl-step-desc">Send a password request email with your GitHub username and YouTube confirmation, then enter the password you receive.</p>
+      <a id="dl-request-btn"
+         href="mailto:engr.aanis@gmail.com?subject=Report%20PDF%20Access%20Request&body=Hello%2C%0A%0AI%20have%20completed%20the%20following%20steps%3A%0A%0A1.%20GitHub%20Follow%3A%20%5BYour%20GitHub%20username%5D%0A2.%20YouTube%20Subscribe%3A%20Confirmed%0A%0APlease%20send%20me%20the%20access%20password%20for%20the%20SIF%20Research%20Report%20PDF.%0A%0AThank%20you."
+         class="dl-btn-request">&#9993; Send Password Request Email</a>
+      <div class="dl-divider"><span>then enter password below</span></div>
       <div class="dl-pass-wrap">
         <input type="password" id="dl-pass-input" class="dl-pass-input" placeholder="Enter access password…" onkeydown="if(event.key==='Enter') dlCheckPass()"/>
         <button class="dl-btn-primary" onclick="dlCheckPass()">&#128275; Unlock &amp; Download</button>
@@ -286,7 +289,7 @@ pre.code-block{background:var(--code-bg);color:var(--code-fg);font-family:'Couri
       <div class="dl-unlock-icon">&#9989;</div>
       <h3 class="dl-step-title" style="color:#15803d">Access Granted!</h3>
       <p class="dl-step-desc">Your download will start automatically. Thank you for supporting open research.</p>
-      <a id="dl-link" href="assets/papers/Serverless-Firewall-Report-Research-1.pdf" download class="dl-btn-primary">&#11015; Download Report PDF</a>
+      <a id="dl-link" href="assets/papers/SIF-Comprehensive-Report-2026.pdf" download class="dl-btn-primary">&#11015; Download Report PDF</a>
       <button class="dl-btn-next" onclick="closeDownloadGate()">Close</button>
     </div>
 
@@ -1270,6 +1273,13 @@ ol.ref-list li{font-size:10.5pt;margin-bottom:12px;padding-left:8px;text-align:j
 .report-footer a{color:#90cdf4}
 .kpi-val{display:block;font-family:var(--font-head);font-size:22pt;font-weight:700;line-height:1}
 .kpi-lbl{display:block;font-size:9pt;opacity:.85;margin-top:4px}
+.dl-btn-request{display:flex;align-items:center;justify-content:center;gap:6px;
+  background:#fff;color:var(--h1-color);border:2px solid var(--h1-color);border-radius:6px;
+  padding:10px 20px;font-size:11pt;font-weight:600;font-family:var(--font-body);
+  cursor:pointer;text-decoration:none;transition:all .2s;text-align:center}
+.dl-btn-request:hover{background:var(--h1-color);color:#fff}
+.dl-divider{display:flex;align-items:center;gap:10px;color:#aaa;font-size:9.5pt;margin:2px 0}
+.dl-divider::before,.dl-divider::after{content:'';flex:1;height:1px;background:#e2e8f0}
 @media(max-width:700px){.fig-row{grid-template-columns:1fr}.kpi-row{grid-template-columns:1fr 1fr}}
 </style>
 
