@@ -322,6 +322,67 @@ html,body{width:100%;min-height:100vh;background:#c8c0b8;font-family:var(--font)
   .poster{aspect-ratio:auto;min-height:auto}
 }
 
+/* ── ANIMATIONS ──────────────────────────────────────── */
+@keyframes countUp{from{opacity:0;transform:scale(.7)}to{opacity:1;transform:scale(1)}}
+@keyframes fadeSlide{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulse{0%,100%{box-shadow:0 2px 12px rgba(139,0,0,.18)}50%{box-shadow:0 4px 22px rgba(139,0,0,.38)}}
+@keyframes pipePulse{0%,100%{border-color:var(--crimson);background:rgba(139,0,0,.08)}
+  50%{border-color:var(--gold);background:rgba(200,150,12,.12)}}
+
+/* Animated stat counters */
+.sv{animation:countUp .6s ease both}
+.stat:nth-child(1) .sv{animation-delay:.1s}
+.stat:nth-child(2) .sv{animation-delay:.25s}
+.stat:nth-child(3) .sv{animation-delay:.4s}
+.stat:nth-child(4) .sv{animation-delay:.55s}
+
+/* Box hover effects */
+.box{transition:transform .2s,box-shadow .2s}
+.box:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(139,0,0,.2)}
+.cbox{transition:transform .2s,box-shadow .2s;animation:pulse 3s ease-in-out infinite}
+.cbox:hover{transform:translateY(-2px);animation:none;box-shadow:0 8px 28px rgba(139,0,0,.32)}
+
+/* Animated pipeline */
+.ps{animation:pipePulse 2.5s ease-in-out infinite}
+.ps:nth-child(1){animation-delay:0s}
+.ps:nth-child(3){animation-delay:.5s}
+.ps:nth-child(5){animation-delay:1s}
+.ps:nth-child(7){animation-delay:1.5s}
+.ps:nth-child(9){animation-delay:2s}
+
+/* Highlight strip pulse */
+.hl{animation:fadeSlide .8s ease .3s both}
+
+/* Flip card for contributions */
+.flip-wrap{perspective:600px;cursor:pointer}
+.flip-inner{position:relative;transform-style:preserve-3d;transition:transform .5s}
+.flip-wrap:hover .flip-inner{transform:rotateY(180deg)}
+.flip-front,.flip-back{backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.flip-back{position:absolute;inset:0;transform:rotateY(180deg);
+  background:rgba(139,0,0,.92);color:#FFE0A0;border-radius:4px;
+  padding:5px 8px;font-size:clamp(5.5px,.65vw,8.5px);overflow:hidden}
+.flip-back strong{color:#fff}
+
+/* Tooltip on pipeline nodes */
+.ps{position:relative}
+.ps-tip{
+  position:absolute;bottom:110%;left:50%;transform:translateX(-50%);
+  background:rgba(60,0,0,.92);color:#FFE0A0;border-radius:4px;
+  padding:4px 7px;font-size:clamp(5px,.58vw,8px);white-space:nowrap;
+  pointer-events:none;opacity:0;transition:opacity .2s;z-index:10;
+  border:1px solid var(--gold);
+}
+.ps:hover .ps-tip{opacity:1}
+
+/* Progress bars for model comparison */
+.prog-row{display:flex;align-items:center;gap:5px;margin:2px 0}
+.prog-label{font-size:clamp(5.5px,.65vw,8.5px);width:clamp(28px,3.5vw,50px);flex-shrink:0;font-weight:600}
+.prog-bar-bg{flex:1;background:rgba(139,0,0,.12);border-radius:3px;height:clamp(6px,.7vw,10px);overflow:hidden}
+.prog-bar-fill{height:100%;border-radius:3px;background:var(--crimson);
+  -webkit-print-color-adjust:exact;print-color-adjust:exact;
+  transition:width 1.2s ease}
+.prog-val{font-size:clamp(5px,.62vw,8px);font-weight:700;color:var(--crimson-dark);width:clamp(22px,2.8vw,40px)}
+
 /* ── PRINT ───────────────────────────────────────────── */
 @media print{
   @page{size:48in 36in landscape;margin:0}
@@ -430,7 +491,7 @@ html,body{width:100%;min-height:100vh;background:#c8c0b8;font-family:var(--font)
 
     <div class="hdr-right">
       <span class="badge badge-cg">CG 2026</span>
-      <span class="badge badge-ieee">&#9733; Published IEEE 2025</span>
+      <span class="badge badge-ieee">Gannon University</span>
     </div>
   </div>
 
@@ -501,15 +562,15 @@ html,body{width:100%;min-height:100vh;background:#c8c0b8;font-family:var(--font)
         <div class="bh">Methodology (An Overview)</div>
         <div class="bb">
           <div class="pipeline">
-            <div class="ps"><i>&#128202;</i>CICIDS2017</div>
+            <div class="ps"><i>&#128202;</i>CICIDS2017<div class="ps-tip">2.8M+ flows · 78 features · 5 classes</div></div>
             <span class="pa">&#8594;</span>
-            <div class="ps"><i>&#9881;</i>Pre-process &amp; Normalize</div>
+            <div class="ps"><i>&#9881;</i>Preprocess<div class="ps-tip">Clean · Undersample · Normalise</div></div>
             <span class="pa">&#8594;</span>
-            <div class="ps"><i>&#129504;</i>LSTM Training</div>
+            <div class="ps"><i>&#129504;</i>LSTM Train<div class="ps-tip">128→64→32 units · Dropout 0.3 · Adam</div></div>
             <span class="pa">&#8594;</span>
-            <div class="ps"><i>&#9729;</i>AWS Lambda</div>
+            <div class="ps"><i>&#9729;</i>AWS Lambda<div class="ps-tip">&lt;15 ms warm · &lt;100 ms cold start</div></div>
             <span class="pa">&#8594;</span>
-            <div class="ps"><i>&#128274;</i>ZTA Enforce</div>
+            <div class="ps"><i>&#128274;</i>ZTA Enforce<div class="ps-tip">ALLOW/BLOCK · mTLS · IAM · SNS Alert</div></div>
           </div>
 
           <div class="fig">
@@ -553,13 +614,19 @@ html,body{width:100%;min-height:100vh;background:#c8c0b8;font-family:var(--font)
             <div class="stat"><span class="sv">98%</span><span class="sl">F1-Score</span></div>
           </div>
 
-          <table class="tbl">
-            <thead><tr><th>Model</th><th>Accuracy</th><th>Precision</th><th>Recall</th><th>F1</th></tr></thead>
+          <div id="prog-bars">
+            <div class="prog-row"><span class="prog-label">SVM</span><div class="prog-bar-bg"><div class="prog-bar-fill" style="width:0" data-w="88.4%"></div></div><span class="prog-val">88.4%</span></div>
+            <div class="prog-row"><span class="prog-label">Dec.Tree</span><div class="prog-bar-bg"><div class="prog-bar-fill" style="width:0" data-w="90.2%"></div></div><span class="prog-val">90.2%</span></div>
+            <div class="prog-row"><span class="prog-label">CNN</span><div class="prog-bar-bg"><div class="prog-bar-fill" style="width:0" data-w="93%"></div></div><span class="prog-val">93.0%</span></div>
+            <div class="prog-row"><span class="prog-label" style="color:var(--gold)">LSTM ★</span><div class="prog-bar-bg"><div class="prog-bar-fill" style="width:0;background:linear-gradient(90deg,var(--crimson),var(--gold))" data-w="98%"></div></div><span class="prog-val" style="color:var(--crimson);font-size:clamp(6px,.72vw,9.5px)">98.0%</span></div>
+          </div>
+          <table class="tbl" style="margin-top:4px">
+            <thead><tr><th>Model</th><th>Prec.</th><th>Recall</th><th>F1</th></tr></thead>
             <tbody>
-              <tr><td>SVM</td><td>88.4%</td><td>84.1%</td><td>77.8%</td><td>80.8%</td></tr>
-              <tr><td>Decision Tree</td><td>90.2%</td><td>87.6%</td><td>81.3%</td><td>84.3%</td></tr>
-              <tr><td>CNN</td><td>93.0%</td><td>95.1%</td><td>85.4%</td><td>89.9%</td></tr>
-              <tr class="best"><td><strong>LSTM (Proposed)</strong></td><td><strong>98.0%</strong></td><td><strong>98.0%</strong></td><td><strong>98.0%</strong></td><td><strong>98.0%</strong></td></tr>
+              <tr><td>SVM</td><td>84.1%</td><td>77.8%</td><td>80.8%</td></tr>
+              <tr><td>Dec.Tree</td><td>87.6%</td><td>81.3%</td><td>84.3%</td></tr>
+              <tr><td>CNN</td><td>95.1%</td><td>85.4%</td><td>89.9%</td></tr>
+              <tr class="best"><td><strong>LSTM</strong></td><td><strong>98.0%</strong></td><td><strong>98.0%</strong></td><td><strong>98.0%</strong></td></tr>
             </tbody>
           </table>
 
@@ -673,7 +740,7 @@ html,body{width:100%;min-height:100vh;background:#c8c0b8;font-family:var(--font)
 
   <!-- ── FOOTER ── -->
   <div class="ftr">
-    <span>&#169; 2025 Md Anisur Rahman Chowdhury et al. &nbsp;|&nbsp; Gannon University, Erie, PA 16541 &nbsp;|&nbsp; Published in IEEE 2025</span>
+    <span>&#169; 2025 Md Anisur Rahman Chowdhury et al. &nbsp;|&nbsp; Gannon University, Erie, PA 16541 &nbsp;|&nbsp; Department of Computer and Information Science</span>
     <div class="ftr-links">
       <span>&#128279; github.com/ANIS151993/Serverless-Intelligent-Firewall-Research-1</span>
       <span>&#9654; youtu.be/K04bOFbv204</span>
@@ -692,7 +759,28 @@ function dlGo(n){['dl-s1','dl-s2','dl-s3','dl-s-ok'].forEach(id=>{const el=docum
 async function dlCheck(){const i=document.getElementById('dl-pw-inp');const e=document.getElementById('dl-err');const h=await sha256(i.value.trim());if(h===H){e.classList.add('dl-hidden');dlGo('ok');setTimeout(()=>{const l=document.getElementById('dl-lnk');if(l)l.click();},600);}else{e.classList.remove('dl-hidden');i.classList.remove('shake');void i.offsetWidth;i.classList.add('shake');i.focus();}}
 document.addEventListener('click',e=>{if(e.target===document.getElementById('dl-overlay'))closeGate();});
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeGate();});
-document.addEventListener('DOMContentLoaded',()=>{if(window.location.hash==='#download')openGate();});
+document.addEventListener('DOMContentLoaded',()=>{
+  if(window.location.hash==='#download')openGate();
+  // Animate progress bars after short delay
+  setTimeout(()=>{
+    document.querySelectorAll('.prog-bar-fill').forEach(el=>{
+      el.style.width=el.dataset.w||'0';
+    });
+  },400);
+  // Animate stat counters
+  document.querySelectorAll('.sv').forEach(el=>{
+    const target=parseFloat(el.textContent);
+    if(isNaN(target))return;
+    const suffix=el.textContent.replace(/[\d.]/g,'');
+    let start=0,duration=900,step=16;
+    const inc=target/(duration/step);
+    const timer=setInterval(()=>{
+      start=Math.min(start+inc,target);
+      el.textContent=(Number.isInteger(target)?Math.round(start):start.toFixed(1))+suffix;
+      if(start>=target)clearInterval(timer);
+    },step);
+  });
+});
 </script>
 </body>
 </html>
