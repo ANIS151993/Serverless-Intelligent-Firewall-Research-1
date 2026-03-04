@@ -1264,6 +1264,9 @@ document.addEventListener('keydown', function(e) {
 
 document.addEventListener('DOMContentLoaded', function() {
 
+  /* ── Auto-open download gate if linked with #download ───────── */
+  if (window.location.hash === '#download') { openDownloadGate(); }
+
   /* ── Sidebar active-link on scroll ─────────────────────────── */
   const sections = document.querySelectorAll('[id]');
   const navLinks = document.querySelectorAll('.rpt-nav a');

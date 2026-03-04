@@ -692,6 +692,7 @@ function dlGo(n){['dl-s1','dl-s2','dl-s3','dl-s-ok'].forEach(id=>{const el=docum
 async function dlCheck(){const i=document.getElementById('dl-pw-inp');const e=document.getElementById('dl-err');const h=await sha256(i.value.trim());if(h===H){e.classList.add('dl-hidden');dlGo('ok');setTimeout(()=>{const l=document.getElementById('dl-lnk');if(l)l.click();},600);}else{e.classList.remove('dl-hidden');i.classList.remove('shake');void i.offsetWidth;i.classList.add('shake');i.focus();}}
 document.addEventListener('click',e=>{if(e.target===document.getElementById('dl-overlay'))closeGate();});
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeGate();});
+document.addEventListener('DOMContentLoaded',()=>{if(window.location.hash==='#download')openGate();});
 </script>
 </body>
 </html>
