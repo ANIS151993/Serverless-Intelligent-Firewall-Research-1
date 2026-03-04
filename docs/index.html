@@ -93,6 +93,17 @@
 .rpt-prev-body{font-size:10pt;line-height:1.65;text-align:justify;color:#2d2d2d;margin-bottom:8px}
 .rpt-preview-fade{position:absolute;bottom:0;left:0;right:0;height:80px;
   background:linear-gradient(transparent,#fff);pointer-events:none}
+/* ── Author profile pills ── */
+.author-profiles{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:14px;justify-content:center}
+.profile-label{font-size:0.78rem;color:rgba(255,255,255,.65);font-weight:500;letter-spacing:.03em}
+.profile-pill{display:inline-flex;align-items:center;gap:5px;padding:5px 13px;border-radius:999px;
+  font-size:0.78rem;font-weight:600;text-decoration:none;transition:opacity .2s,transform .15s;white-space:nowrap}
+.profile-pill:hover{opacity:.85;transform:translateY(-1px);text-decoration:none}
+.profile-linkedin{background:#0077B5;color:#fff}
+.profile-github{background:#24292e;color:#fff}
+.profile-scholar{background:#4285F4;color:#fff}
+.profile-portfolio{background:#6c47ff;color:#fff}
+.profile-rg{background:#00CCBB;color:#fff}
 </style>
 </head>
 <body>
@@ -138,6 +149,14 @@
         <sup>1</sup>Dept. of Computer and Information Science, Gannon University, USA &nbsp;|&nbsp;
         <sup>2</sup>Dept. of Information Technology &amp; Computer Science, University of the Potomac, USA
       </p>
+      <div class="author-profiles">
+        <span class="profile-label">Lead Author Profiles:</span>
+        <a href="https://linkedin.com/in/md-anisur-rahman-chowdhury-15862420a" target="_blank" class="profile-pill profile-linkedin">&#128101; LinkedIn</a>
+        <a href="https://github.com/ANIS151993" target="_blank" class="profile-pill profile-github">&#128571; GitHub</a>
+        <a href="https://scholar.google.com/citations?user=NQyywPoAAAAJ&hl=en" target="_blank" class="profile-pill profile-scholar">&#127891; Google Scholar</a>
+        <a href="https://marcbd.com" target="_blank" class="profile-pill profile-portfolio">&#127760; Portfolio</a>
+        <a href="https://researchgate.net/profile/Md-Anisur-Rahman-Chowdhury" target="_blank" class="profile-pill profile-rg">&#128209; ResearchGate</a>
+      </div>
     </div>
     <div class="hero-cta">
       <a href="#architecture" class="btn btn-primary">View Architecture</a>
@@ -816,6 +835,9 @@ Thank you.</div>
       <a href="intelligent-firewall-AI-Model/results/results_Final.csv" target="_blank" class="resource-card"><div class="resource-icon">&#128200;</div><h3>Results Dataset (CSV)</h3><p>Raw performance metrics exported as CSV for reproducibility.</p><span class="resource-link">results_Final.csv</span></a>
       <a href="https://ieeexplore.ieee.org/abstract/document/11261452" target="_blank" class="resource-card"><div class="resource-icon">&#128279;</div><h3>IEEE Xplore</h3><p>View the published paper on IEEE Xplore — abstract and metadata publicly available.</p><span class="resource-link">ieeexplore.ieee.org</span></a>
       <a href="https://scholar.google.com/citations?user=NQyywPoAAAAJ&hl=en" target="_blank" class="resource-card"><div class="resource-icon">&#127891;</div><h3>Google Scholar</h3><p>Author profile, citation metrics, and full publication list on Google Scholar.</p><span class="resource-link">scholar.google.com</span></a>
+      <a href="https://linkedin.com/in/md-anisur-rahman-chowdhury-15862420a" target="_blank" class="resource-card"><div class="resource-icon">&#128101;</div><h3>LinkedIn</h3><p>Professional profile, experience, and research updates from the lead author.</p><span class="resource-link">linkedin.com/in/md-anisur-rahman-chowdhury-15862420a</span></a>
+      <a href="https://researchgate.net/profile/Md-Anisur-Rahman-Chowdhury" target="_blank" class="resource-card"><div class="resource-icon">&#128209;</div><h3>ResearchGate</h3><p>Full research profile, publications, and collaboration network.</p><span class="resource-link">researchgate.net</span></a>
+      <a href="https://marcbd.com" target="_blank" class="resource-card"><div class="resource-icon">&#127760;</div><h3>Portfolio Website</h3><p>Lead author's personal portfolio — projects, research, and contact information.</p><span class="resource-link">marcbd.com</span></a>
       <a href="mailto:engr.aanis@gmail.com" class="resource-card"><div class="resource-icon">&#9993;</div><h3>Contact Author</h3><p>Questions, collaboration, or paper access requests.</p><span class="resource-link">engr.aanis@gmail.com</span></a>
     </div>
   </div>
@@ -828,7 +850,17 @@ Thank you.</div>
       <div class="footer-col"><h4>SIF Research-1</h4><p>Towards a Serverless Intelligent Firewall: AI-Driven Security and Zero-Trust Architectures</p><p><em>Published in IEEE, 2025</em></p></div>
       <div class="footer-col"><h4>Quick Links</h4><ul><li><a href="#abstract">Abstract</a></li><li><a href="#architecture">Architecture</a></li><li><a href="#video">Video</a></li><li><a href="#paper">Paper</a></li><li><a href="#results">Results</a></li><li><a href="#report">Report</a></li><li><a href="#poster">Poster</a></li></ul></div>
       <div class="footer-col"><h4>Research Team</h4><ul><li>Md Anisur Rahman Chowdhury*</li><li>Aishwarya</li><li>Dr. Ronny Bazan-Antequera</li><li>Md. Sayham Khan</li><li>Md Razaul Karim</li><li>Dr. Sheheeda Manakkadu</li></ul></div>
-      <div class="footer-col"><h4>Links</h4><ul><li><a href="https://github.com/ANIS151993/Serverless-Intelligent-Firewall-Research-1" target="_blank">GitHub Repository</a></li><li><a href="https://youtu.be/K04bOFbv204" target="_blank">YouTube Video</a></li><li><a href="https://ieeexplore.ieee.org/abstract/document/11261452" target="_blank">IEEE Xplore</a></li><li><a href="https://scholar.google.com/citations?user=NQyywPoAAAAJ&hl=en" target="_blank">Google Scholar</a></li><li><a href="report.html" target="_blank">Research Report</a></li><li><a href="poster.html" target="_blank">Research Poster</a></li></ul></div>
+      <div class="footer-col"><h4>Links</h4><ul>
+        <li><a href="https://github.com/ANIS151993/Serverless-Intelligent-Firewall-Research-1" target="_blank">GitHub Repository</a></li>
+        <li><a href="https://youtu.be/K04bOFbv204" target="_blank">YouTube Video</a></li>
+        <li><a href="https://ieeexplore.ieee.org/abstract/document/11261452" target="_blank">IEEE Xplore</a></li>
+        <li><a href="https://scholar.google.com/citations?user=NQyywPoAAAAJ&hl=en" target="_blank">Google Scholar</a></li>
+        <li><a href="https://linkedin.com/in/md-anisur-rahman-chowdhury-15862420a" target="_blank">LinkedIn</a></li>
+        <li><a href="https://researchgate.net/profile/Md-Anisur-Rahman-Chowdhury" target="_blank">ResearchGate</a></li>
+        <li><a href="https://marcbd.com" target="_blank">Portfolio</a></li>
+        <li><a href="report.html" target="_blank">Research Report</a></li>
+        <li><a href="poster.html" target="_blank">Research Poster</a></li>
+      </ul></div>
     </div>
     <div class="footer-bottom"><p>&copy; 2025 Md Anisur Rahman Chowdhury et al. Published in IEEE. Gannon University &amp; University of the Potomac.</p></div>
   </div>
