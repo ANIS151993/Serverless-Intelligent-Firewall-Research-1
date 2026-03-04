@@ -68,6 +68,24 @@ function copyEmail() {
   });
 }
 
+function copyCitation() {
+  const ieee = 'M. A. R. Chowdhury, Aishwarya, R. Bazan-Antequera, M. S. Khan, M. R. Karim, and S. Manakkadu, "Towards a Serverless Intelligent Firewall: AI-Driven Security, and Zero-Trust Architectures," in Proc. IEEE, 2025. [Online]. Available: https://ieeexplore.ieee.org/abstract/document/11261452';
+  navigator.clipboard.writeText(ieee).then(() => {
+    const btn = document.getElementById('copy-cite-btn');
+    if (btn) { btn.textContent = '✓ Copied!'; setTimeout(() => { btn.innerHTML = '&#128203; Copy Citation'; }, 2500); }
+  }).catch(() => {
+    /* Fallback for older browsers */
+    const ta = document.createElement('textarea');
+    ta.value = ieee;
+    ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta); ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    const btn = document.getElementById('copy-cite-btn');
+    if (btn) { btn.textContent = '✓ Copied!'; setTimeout(() => { btn.innerHTML = '&#128203; Copy Citation'; }, 2500); }
+  });
+}
+
 /* ─── Interactive Architecture Nodes ─────────────────────────────────────────*/
 const NODE_DATA = {
   dataset: {
