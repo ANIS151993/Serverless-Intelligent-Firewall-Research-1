@@ -69,21 +69,39 @@ function copyEmail() {
 }
 
 function copyCitation() {
-  const ieee = 'M. A. R. Chowdhury, Aishwarya, R. Bazan-Antequera, M. S. Khan, M. R. Karim, and S. Manakkadu, "Towards a Serverless Intelligent Firewall: AI-Driven Security, and Zero-Trust Architectures," in Proc. IEEE, 2025. [Online]. Available: https://ieeexplore.ieee.org/abstract/document/11261452';
-  navigator.clipboard.writeText(ieee).then(() => {
-    const btn = document.getElementById('copy-cite-btn');
-    if (btn) { btn.textContent = '✓ Copied!'; setTimeout(() => { btn.innerHTML = '&#128203; Copy Citation'; }, 2500); }
-  }).catch(() => {
-    /* Fallback for older browsers */
-    const ta = document.createElement('textarea');
-    ta.value = ieee;
-    ta.style.position = 'fixed'; ta.style.opacity = '0';
-    document.body.appendChild(ta); ta.select();
-    document.execCommand('copy');
-    document.body.removeChild(ta);
-    const btn = document.getElementById('copy-cite-btn');
-    if (btn) { btn.textContent = '✓ Copied!'; setTimeout(() => { btn.innerHTML = '&#128203; Copy Citation'; }, 2500); }
-  });
+  /* Read text from the hidden textarea — avoids any JS string encoding issues */
+  const ta   = document.getElementById('citation-text');
+  const text = ta ? ta.value : '';
+  const btn  = document.getElementById('copy-cite-btn');
+  const lbl  = document.getElementById('copy-cite-label');
+  const icon = document.getElementById('copy-cite-icon');
+  const successSVG = '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>';
+  const copySVG    = '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>';
+
+  function onSuccess() {
+    if (!btn) return;
+    btn.classList.add('copied');
+    if (icon) icon.outerHTML = successSVG;   /* swap to checkmark */
+    if (lbl)  lbl.textContent = 'Copied!';
+    setTimeout(() => {
+      btn.classList.remove('copied');
+      const newIcon = document.getElementById('copy-cite-icon') || btn.querySelector('svg');
+      if (newIcon) newIcon.outerHTML = copySVG;
+      if (lbl) lbl.textContent = 'Copy Citation';
+    }, 2500);
+  }
+
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(text).then(onSuccess).catch(() => fallback(text, onSuccess));
+  } else {
+    fallback(text, onSuccess);
+  }
+
+  function fallback(txt, cb) {
+    ta.style.opacity = '1'; ta.select(); ta.setSelectionRange(0, 99999);
+    try { document.execCommand('copy'); cb(); } catch(e) { alert('Copy failed. Please copy manually:\n\n' + txt); }
+    ta.style.opacity = '0';
+  }
 }
 
 /* ─── Interactive Architecture Nodes ─────────────────────────────────────────*/
