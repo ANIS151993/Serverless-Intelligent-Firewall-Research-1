@@ -1,2178 +1,697 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Towards a Serverless Intelligent Firewall – IEEE 2025 Research Poster</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>SIF Research Poster — CG 2026 | Gannon University</title>
+<link href="https://fonts.googleapis.com/css2?family=Calibri:wght@400;700&family=Open+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet"/>
 <style>
-/* ================================================================
-   RESET & BASE
-================================================================ */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-:root {
-  --primary:       #1e3a5f;
-  --primary-mid:   #274f82;
-  --accent:        #0ea5e9;
-  --accent-light:  #38bdf8;
-  --success:       #16a34a;
-  --success-light: #22c55e;
-  --warn:          #d97706;
-  --warn-light:    #f59e0b;
-  --red:           #dc2626;
-  --white:         #ffffff;
-  --off-white:     #f8fafc;
-  --panel-bg:      #ffffff;
-  --panel-border:  #e2e8f0;
-  --text-dark:     #0f172a;
-  --text-mid:      #334155;
-  --text-light:    #64748b;
-  --grad-header:   linear-gradient(135deg, #0f1f3d 0%, #1e3a5f 40%, #274f82 70%, #1a4d7a 100%);
-  --shadow-sm:     0 1px 3px rgba(0,0,0,.12), 0 1px 2px rgba(0,0,0,.08);
-  --shadow-md:     0 4px 12px rgba(0,0,0,.15), 0 2px 4px rgba(0,0,0,.10);
-  --shadow-lg:     0 10px 30px rgba(0,0,0,.20), 0 4px 8px rgba(0,0,0,.12);
-  --radius:        8px;
-  --radius-lg:     12px;
+/* ════════════════════════════════════════════════════════════
+   CG 2026 CONFERENCE POSTER  —  48" × 36"  (4 : 3 landscape)
+   Template: crimson mosaic header + cream sunburst body
+   3 Columns · 2 featured boxes in center column
+════════════════════════════════════════════════════════════ */
+:root{
+  --crimson:#8B0000;
+  --crimson-dark:#6B0000;
+  --crimson-mid:#A50000;
+  --gold:#C8960C;
+  --cream:#FDF6E3;
+  --white:#FFFFFF;
+  --box-bg:rgba(255,255,255,0.92);
+  --box-border:rgba(139,0,0,0.35);
+  --center-border:#8B0000;
+  --text:#1a1a1a;
+  --head-text:#5C0000;
+  --font:'Open Sans','Calibri',Arial,sans-serif;
 }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;min-height:100vh;background:#c8c0b8;font-family:var(--font)}
 
-html {
-  font-family: 'Source Sans 3', sans-serif;
-  font-size: 10.5px;
-  background: #d1d5db;
-  color: var(--text-dark);
-  line-height: 1.4;
+/* ── POSTER SHELL — 4:3 aspect ratio ────────────────── */
+.poster{
+  position:relative;
+  width:100%;
+  max-width:1440px;
+  margin:0 auto;
+  aspect-ratio:4/3;
+  overflow:hidden;
+  box-shadow:0 8px 48px rgba(0,0,0,.4);
+  display:flex;
+  flex-direction:column;
 }
 
-/* ================================================================
-   POSTER WRAPPER — A0 landscape proportions
-================================================================ */
-.poster {
-  width: 1189mm;
-  min-height: 841mm;
-  background: var(--off-white);
-  margin: 10px auto;
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  box-shadow: 0 20px 60px rgba(0,0,0,.5);
-  overflow: hidden;
+/* ── BACKGROUND (full poster) ────────────────────────── */
+.poster-bg{
+  position:absolute;inset:0;
+  background-image:url('assets/images/poster-bg.jpg');
+  background-size:100% 100%;
+  background-repeat:no-repeat;
+  z-index:0;
 }
 
-/* ================================================================
-   PRINT BUTTON (screen only)
-================================================================ */
-.print-bar {
-  position: fixed;
-  top: 12px;
-  right: 16px;
-  z-index: 9999;
-  display: flex;
-  gap: 8px;
-}
-.print-bar button {
-  padding: 8px 16px;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-family: 'Source Sans 3', sans-serif;
-  font-size: 13px;
-  font-weight: 600;
-  transition: all .2s;
-}
-.btn-print {
-  background: var(--primary);
-  color: #fff;
-}
-.btn-print:hover { background: var(--primary-mid); transform: translateY(-1px); box-shadow: var(--shadow-md); }
-.btn-dl {
-  background: var(--success);
-  color: #fff;
-}
-.btn-dl:hover { background: var(--success-light); transform: translateY(-1px); box-shadow: var(--shadow-md); }
+/* Everything above the background */
+.poster > *:not(.poster-bg){position:relative;z-index:1}
 
-/* ================================================================
-   HEADER
-================================================================ */
-.poster-header {
-  background: var(--grad-header);
-  padding: 18px 28px 14px;
-  display: grid;
-  grid-template-columns: auto 1fr auto;
-  gap: 16px;
-  align-items: center;
-  position: relative;
-  overflow: hidden;
+/* ── HEADER — crimson mosaic band ────────────────────── */
+.hdr{
+  /* The bg image already paints the crimson header band;
+     we overlay a semi-transparent crimson to keep text readable */
+  background:rgba(100,0,0,0.82);
+  flex-shrink:0;
+  padding:10px 20px 8px;
+  display:grid;
+  grid-template-columns:105px 1fr 105px;
+  align-items:center;
+  gap:10px;
+  border-bottom:4px solid var(--gold);
 }
-.poster-header::before {
-  content: '';
-  position: absolute;
-  top: -60px; right: -60px;
-  width: 260px; height: 260px;
-  border-radius: 50%;
-  background: rgba(14,165,233,.12);
-  pointer-events: none;
+.hdr-logo{
+  display:flex;flex-direction:column;align-items:center;gap:3px;
 }
-.poster-header::after {
-  content: '';
-  position: absolute;
-  bottom: -40px; left: 200px;
-  width: 180px; height: 180px;
-  border-radius: 50%;
-  background: rgba(255,255,255,.04);
-  pointer-events: none;
+.hdr-logo img{
+  width:88px;background:#fff;border-radius:4px;padding:3px;
 }
+.hdr-logo span{
+  font-size:clamp(6px,.7vw,9px);color:rgba(255,255,255,.8);text-align:center;line-height:1.3;
+}
+.hdr-center{text-align:center}
+.hdr-title{
+  font-size:clamp(13px,1.5vw,21px);
+  font-weight:800;line-height:1.2;
+  color:#FFFFFF;
+  text-shadow:1px 1px 3px rgba(0,0,0,.5);
+  margin-bottom:6px;
+  letter-spacing:.01em;
+}
+.hdr-authors{
+  display:flex;justify-content:center;flex-wrap:wrap;gap:18px;margin-bottom:3px;
+}
+.hdr-author .name{
+  font-weight:700;color:#FFE0A0;
+  font-size:clamp(7px,.85vw,11.5px);line-height:1.3;
+}
+.hdr-author .detail{
+  color:rgba(255,255,255,.85);
+  font-size:clamp(6px,.72vw,9.5px);line-height:1.4;
+}
+.hdr-advisor{
+  font-size:clamp(5.5px,.68vw,9px);
+  color:rgba(255,255,255,.78);margin-top:2px;
+}
+.hdr-right{
+  display:flex;flex-direction:column;align-items:flex-end;gap:5px;text-align:right;
+}
+.badge{
+  font-weight:800;font-size:clamp(8px,.9vw,12px);
+  padding:4px 10px;border-radius:4px;display:inline-block;letter-spacing:.05em;
+}
+.badge-cg{background:var(--gold);color:#3B0000}
+.badge-ieee{background:#fff;color:var(--crimson-dark)}
 
-/* IEEE Badge */
-.ieee-badge {
-  background: rgba(255,255,255,.12);
-  border: 2px solid rgba(255,255,255,.3);
-  border-radius: var(--radius);
-  padding: 8px 14px;
-  text-align: center;
-  color: #fff;
-  min-width: 90px;
+/* ── BODY — 3 columns over sunburst background ───────── */
+.body{
+  flex:1;
+  display:grid;
+  grid-template-columns:1fr 1.1fr 1fr;
+  gap:10px;
+  padding:10px 12px;
+  min-height:0;
 }
-.ieee-badge .ieee-logo {
-  font-family: 'Crimson Text', serif;
-  font-size: 22px;
-  font-weight: 700;
-  letter-spacing: 2px;
-  color: var(--accent-light);
-  display: block;
-  line-height: 1;
+.col{display:flex;flex-direction:column;gap:8px;min-height:0}
+
+/* ── STANDARD BOX ────────────────────────────────────── */
+.box{
+  background:var(--box-bg);
+  border:1.5px solid var(--box-border);
+  border-radius:5px;
+  overflow:hidden;
+  display:flex;flex-direction:column;
+  backdrop-filter:blur(2px);
+  -webkit-backdrop-filter:blur(2px);
 }
-.ieee-badge .ieee-sub {
-  font-size: 8px;
-  color: rgba(255,255,255,.75);
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  display: block;
-  margin-top: 2px;
-}
-.ieee-badge .ieee-year {
-  font-size: 11px;
-  color: var(--warn-light);
-  font-weight: 700;
-  margin-top: 3px;
-  display: block;
+.box.grow{flex:1;min-height:0}
+
+.bh{
+  background:var(--crimson);
+  color:#fff;
+  padding:4px 11px;
+  font-size:clamp(7.5px,.88vw,12px);
+  font-weight:700;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  flex-shrink:0;
+  border-bottom:2px solid var(--gold);
 }
 
-/* Title block */
-.header-center { text-align: center; }
-.poster-title {
-  font-family: 'Crimson Text', serif;
-  font-size: 30px;
-  font-weight: 700;
-  color: #ffffff;
-  line-height: 1.2;
-  letter-spacing: .3px;
-  text-shadow: 0 2px 8px rgba(0,0,0,.4);
-  margin-bottom: 8px;
+.bb{
+  padding:7px 10px;
+  font-size:clamp(6.5px,.78vw,10.5px);
+  line-height:1.55;
+  color:var(--text);
+  flex:1;
+  overflow:hidden;
 }
-.poster-title span { color: var(--accent-light); }
+.bb p{margin-bottom:4px;text-align:justify}
+.bb ul,.bb ol{padding-left:13px;margin:3px 0}
+.bb li{margin-bottom:2px}
+.bb strong{color:var(--crimson-dark)}
+.bb .kw{font-weight:700;color:var(--crimson)}
 
-.authors-line {
-  font-size: 11px;
-  color: rgba(255,255,255,.90);
-  font-weight: 500;
-  margin-bottom: 4px;
+/* ── CENTER FEATURE BOXES (the "2 boxes in center") ──── */
+.cbox{
+  border:2.5px solid var(--crimson);
+  border-radius:5px;
+  overflow:hidden;
+  flex:1;min-height:0;
+  display:flex;flex-direction:column;
+  background:rgba(255,255,255,0.95);
+  box-shadow:0 2px 12px rgba(139,0,0,0.18);
 }
-.authors-line .corresponding {
-  color: var(--warn-light);
+.cbox .bh{
+  background:var(--crimson-dark);
+  font-size:clamp(8px,.92vw,12.5px);
+  border-bottom:3px solid var(--gold);
 }
-.affil-line {
-  font-size: 9.5px;
-  color: rgba(255,255,255,.70);
-}
-.affil-line sup { color: var(--accent-light); font-weight: 700; }
-
-/* QR/Link block */
-.header-links {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  align-items: flex-end;
-}
-.link-box {
-  background: rgba(255,255,255,.10);
-  border: 1.5px solid rgba(255,255,255,.25);
-  border-radius: var(--radius);
-  padding: 7px 12px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  cursor: pointer;
-  text-decoration: none;
-  transition: background .2s, border-color .2s;
-}
-.link-box:hover {
-  background: rgba(255,255,255,.22);
-  border-color: var(--accent-light);
-}
-.link-box .qr-icon {
-  width: 36px; height: 36px;
-  background: #fff;
-  border-radius: 4px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-.link-box .qr-icon svg { width: 28px; height: 28px; }
-.link-box .link-text { color: #fff; }
-.link-box .link-text .lbl { font-size: 8px; text-transform: uppercase; letter-spacing: 1px; color: rgba(255,255,255,.65); display: block; }
-.link-box .link-text .url { font-size: 9px; font-weight: 600; color: var(--accent-light); }
-
-/* header accent strip */
-.header-accent-strip {
-  height: 4px;
-  background: linear-gradient(90deg, var(--accent) 0%, var(--success) 50%, var(--warn) 100%);
+.cbox .bh.gold-head{
+  background:linear-gradient(90deg,var(--crimson-dark),var(--crimson-mid));
 }
 
-/* ================================================================
-   MAIN GRID BODY
-================================================================ */
-.poster-body {
-  flex: 1;
-  display: grid;
-  grid-template-columns: 1fr 1.05fr 1.1fr 1fr;
-  gap: 0;
-  padding: 0;
+/* ── STATS ROW ───────────────────────────────────────── */
+.stats{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin:5px 0;
+  -webkit-print-color-adjust:exact;print-color-adjust:exact;
+}
+.stat{
+  background:var(--crimson);color:#fff;
+  border-radius:4px;text-align:center;padding:5px 3px;
+  -webkit-print-color-adjust:exact;print-color-adjust:exact;
+}
+.sv{font-size:clamp(11px,1.35vw,19px);font-weight:800;color:#FFE0A0;display:block}
+.sl{font-size:clamp(5.5px,.65vw,8.5px);opacity:.88;display:block}
+
+/* ── TABLES ──────────────────────────────────────────── */
+.tbl{width:100%;border-collapse:collapse;font-size:clamp(6px,.72vw,9.5px);margin:4px 0}
+.tbl th{
+  background:var(--crimson);color:#fff;padding:2.5px 5px;text-align:left;
+  -webkit-print-color-adjust:exact;print-color-adjust:exact;
+}
+.tbl td{padding:2px 5px;border-bottom:1px solid rgba(139,0,0,.15)}
+.tbl tr:nth-child(even) td{background:rgba(139,0,0,.04);-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.tbl tr.best td{
+  background:rgba(200,150,12,.2);font-weight:700;color:#5C0000;
+  -webkit-print-color-adjust:exact;print-color-adjust:exact;
 }
 
-/* ================================================================
-   COLUMNS
-================================================================ */
-.col {
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-  border-right: 1.5px solid var(--panel-border);
-  padding: 12px 10px;
+/* ── PIPELINE ────────────────────────────────────────── */
+.pipeline{display:flex;align-items:center;justify-content:space-between;gap:2px;margin:5px 0}
+.ps{
+  background:rgba(139,0,0,.08);border:1.5px solid var(--crimson);
+  border-radius:4px;padding:3px 5px;text-align:center;flex:1;
+  font-size:clamp(5px,.6vw,8px);font-weight:600;color:var(--crimson-dark);
 }
-.col:last-child { border-right: none; }
-.col:nth-child(even) { background: #f0f6ff; }
+.ps i{font-size:clamp(10px,1.1vw,15px);display:block;margin-bottom:1px;font-style:normal}
+.pa{color:var(--crimson);font-size:clamp(9px,1vw,14px);font-weight:700;flex-shrink:0}
 
-/* ================================================================
-   SECTION CARDS / PANELS
-================================================================ */
-.panel {
-  background: var(--panel-bg);
-  border: 1px solid var(--panel-border);
-  border-radius: var(--radius-lg);
-  padding: 10px 12px;
-  margin-bottom: 8px;
-  box-shadow: var(--shadow-sm);
-  position: relative;
-  transition: box-shadow .25s, transform .25s;
-}
-.panel:hover {
-  box-shadow: var(--shadow-md);
-  transform: translateY(-1px);
-}
-.panel:last-child { margin-bottom: 0; }
+/* ── FIGURES ─────────────────────────────────────────── */
+.fig{margin:4px 0;text-align:center}
+.fig img{max-width:100%;border-radius:3px;border:1px solid rgba(139,0,0,.2)}
+.fig-cap{font-size:clamp(5.5px,.65vw,8.5px);color:#555;font-style:italic;margin-top:2px}
+.fig-row{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin:4px 0}
 
-.panel-title {
-  font-family: 'Crimson Text', serif;
-  font-size: 14px;
-  font-weight: 700;
-  color: var(--primary);
-  border-bottom: 2px solid var(--accent);
-  padding-bottom: 5px;
-  margin-bottom: 8px;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  text-transform: uppercase;
-  letter-spacing: .5px;
-}
-.panel-title .icon {
-  width: 18px; height: 18px;
-  background: var(--accent);
-  border-radius: 4px;
-  display: flex; align-items: center; justify-content: center;
-  color: #fff;
-  font-size: 10px;
-  flex-shrink: 0;
+/* ── HIGHLIGHT STRIP ─────────────────────────────────── */
+.hl{
+  background:rgba(139,0,0,.07);
+  border-left:3.5px solid var(--crimson);
+  padding:4px 9px;border-radius:3px;margin:4px 0;
+  font-size:clamp(6px,.72vw,9.5px);
+  -webkit-print-color-adjust:exact;print-color-adjust:exact;
 }
 
-.panel p, .panel li {
-  font-size: 9.8px;
-  color: var(--text-mid);
-  line-height: 1.55;
-  margin-bottom: 4px;
+/* ── FOOTER ──────────────────────────────────────────── */
+.ftr{
+  background:rgba(90,0,0,.88);
+  color:rgba(255,255,255,.85);
+  padding:5px 20px;
+  display:flex;align-items:center;justify-content:space-between;
+  flex-shrink:0;
+  border-top:3px solid var(--gold);
+  font-size:clamp(5.5px,.68vw,9px);
+  -webkit-print-color-adjust:exact;print-color-adjust:exact;
 }
-.panel ul { padding-left: 14px; }
-.panel li { margin-bottom: 2px; }
-.panel strong { color: var(--text-dark); }
+.ftr-links{display:flex;gap:16px}
 
-/* ================================================================
-   INTRO COLUMN
-================================================================ */
-.motivation-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 5px;
-  margin-top: 6px;
+/* ── DOWNLOAD BUTTON ─────────────────────────────────── */
+.dl-fab{
+  position:fixed;top:14px;right:14px;z-index:800;
+  background:var(--crimson);color:#FFE0A0;
+  border:2px solid var(--gold);border-radius:6px;
+  padding:9px 16px;font-size:12.5px;font-weight:800;cursor:pointer;
+  box-shadow:0 4px 16px rgba(0,0,0,.35);font-family:var(--font);
+  transition:transform .15s,box-shadow .15s;letter-spacing:.02em;
 }
-.motiv-card {
-  background: linear-gradient(135deg, #f0f6ff 0%, #e8f0fe 100%);
-  border: 1px solid #c7d9f5;
-  border-radius: var(--radius);
-  padding: 7px 8px;
-  text-align: center;
-  cursor: default;
-  transition: all .3s;
-  position: relative;
-  overflow: hidden;
-}
-.motiv-card:hover {
-  transform: scale(1.04);
-  box-shadow: var(--shadow-md);
-  border-color: var(--accent);
-}
-.motiv-card .mc-icon { font-size: 18px; margin-bottom: 3px; display: block; }
-.motiv-card .mc-label {
-  font-size: 8.5px;
-  font-weight: 700;
-  color: var(--primary);
-  text-transform: uppercase;
-  letter-spacing: .5px;
-  display: block;
-}
-.motiv-card .mc-desc {
-  font-size: 8px;
-  color: var(--text-light);
-  display: block;
-  margin-top: 2px;
-  line-height: 1.4;
-}
+.dl-fab:hover{transform:translateY(-2px);box-shadow:0 6px 22px rgba(0,0,0,.4)}
 
-/* Tooltip */
-[data-tooltip] { position: relative; }
-[data-tooltip]::after {
-  content: attr(data-tooltip);
-  position: absolute;
-  bottom: calc(100% + 6px);
-  left: 50%;
-  transform: translateX(-50%);
-  background: var(--primary);
-  color: #fff;
-  font-size: 8.5px;
-  padding: 5px 8px;
-  border-radius: 5px;
-  white-space: nowrap;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity .2s;
-  z-index: 100;
-  max-width: 200px;
-  white-space: normal;
-  text-align: center;
-  line-height: 1.4;
-  box-shadow: var(--shadow-md);
+/* ── GATE MODAL ──────────────────────────────────────── */
+.dl-hidden{display:none!important}
+.dl-overlay{
+  position:fixed;inset:0;z-index:9000;background:rgba(0,0,0,.7);
+  display:flex;align-items:center;justify-content:center;padding:16px;
+  backdrop-filter:blur(4px);
 }
-[data-tooltip]:hover::after { opacity: 1; }
+.dl-modal{
+  background:#fff;border-radius:12px;max-width:480px;width:100%;
+  padding:30px 28px 22px;box-shadow:0 20px 60px rgba(0,0,0,.4);position:relative;
+  border-top:5px solid var(--crimson);
+}
+.dl-close{
+  position:absolute;top:12px;right:14px;background:none;border:none;
+  font-size:21px;cursor:pointer;color:#888;padding:2px 5px;
+}
+.dl-close:hover{color:#333}
+.dl-hdr{text-align:center;margin-bottom:20px}
+.dl-icon{font-size:38px;display:block;margin-bottom:6px}
+.dl-title{font-size:17pt;font-weight:700;color:var(--crimson-dark);margin:0 0 5px}
+.dl-sub{font-size:10pt;color:#666;margin:0}
+.dl-step{display:flex;flex-direction:column;gap:11px}
+.dl-badge{
+  display:inline-block;background:var(--crimson);color:#fff;
+  font-size:9pt;font-weight:700;padding:3px 10px;border-radius:20px;align-self:flex-start;
+}
+.dl-stitle{font-size:12.5pt;font-weight:700;color:#1a1a1a;margin:0}
+.dl-desc{font-size:10pt;color:#555;margin:0;line-height:1.6}
+.dl-btn-p{
+  display:flex;align-items:center;justify-content:center;
+  background:var(--crimson);color:#fff;border:none;border-radius:6px;
+  padding:10px 18px;font-size:10.5pt;font-weight:600;font-family:var(--font);
+  cursor:pointer;text-decoration:none;transition:background .2s;width:100%;text-align:center;
+}
+.dl-btn-p:hover{background:var(--crimson-dark)}
+.dl-btn-n{
+  background:none;border:2px solid var(--crimson);color:var(--crimson);
+  border-radius:6px;padding:8px 18px;font-size:10pt;font-weight:600;
+  font-family:var(--font);cursor:pointer;transition:all .2s;width:100%;
+}
+.dl-btn-n:hover{background:var(--crimson);color:#fff}
+.dl-btn-r{
+  display:flex;align-items:center;justify-content:center;gap:5px;
+  background:#fff;color:var(--crimson);border:2px solid var(--crimson);
+  border-radius:6px;padding:10px 18px;font-size:10.5pt;font-weight:600;
+  font-family:var(--font);cursor:pointer;text-decoration:none;transition:all .2s;
+  text-align:center;width:100%;
+}
+.dl-btn-r:hover{background:var(--crimson);color:#fff}
+.dl-div{display:flex;align-items:center;gap:9px;color:#aaa;font-size:9pt;margin:1px 0}
+.dl-div::before,.dl-div::after{content:'';flex:1;height:1px;background:#e2e8f0}
+.dl-pw{display:flex;flex-direction:column;gap:7px}
+.dl-inp{
+  width:100%;padding:9px 13px;border:2px solid #d1d9e6;border-radius:6px;
+  font-size:10.5pt;font-family:var(--font);outline:none;transition:border .2s;
+}
+.dl-inp:focus{border-color:var(--crimson)}
+.dl-inp.shake{animation:dlShake .4s ease}
+@keyframes dlShake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-6px)}40%,80%{transform:translateX(6px)}}
+.dl-err{color:#dc2626;font-size:9.5pt;font-weight:600;text-align:center;margin:0}
+.dl-dots{display:flex;justify-content:center;gap:7px;margin-top:18px}
+.dl-dot{width:8px;height:8px;border-radius:50%;background:#d1d9e6;transition:background .3s}
+.dl-dot.on{background:var(--crimson)}
 
-/* ZTA gap highlight */
-.zta-gap {
-  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-  border: 1.5px solid var(--warn);
-  border-radius: var(--radius);
-  padding: 7px 10px;
-  margin-top: 6px;
-}
-.zta-gap .gap-title {
-  font-size: 9.5px;
-  font-weight: 700;
-  color: #92400e;
-  margin-bottom: 3px;
-}
-.zta-gap p { font-size: 9px; color: #78350f; }
-
-/* Contributions list */
-.contrib-list {
-  counter-reset: contrib;
-  list-style: none;
-  padding: 0;
-}
-.contrib-list li {
-  counter-increment: contrib;
-  display: flex;
-  gap: 6px;
-  align-items: flex-start;
-  margin-bottom: 5px;
-}
-.contrib-list li::before {
-  content: counter(contrib);
-  background: var(--primary);
-  color: #fff;
-  width: 16px; height: 16px;
-  border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 8px; font-weight: 700;
-  flex-shrink: 0;
-  margin-top: 1px;
+/* ── RESPONSIVE ──────────────────────────────────────── */
+@media(max-width:900px){
+  .body{grid-template-columns:1fr;overflow-y:auto}
+  .poster{aspect-ratio:auto;min-height:auto}
 }
 
-/* ================================================================
-   PIPELINE — animated
-================================================================ */
-.pipeline-wrap {
-  margin: 6px 0;
-  overflow: hidden;
-}
-.pipeline {
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-  position: relative;
-}
-.pipe-stage {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 5px 8px;
-  border-radius: var(--radius);
-  border: 1.5px solid transparent;
-  cursor: default;
-  transition: all .3s;
-  position: relative;
-  overflow: hidden;
-}
-.pipe-stage::before {
-  content: '';
-  position: absolute;
-  top: 0; left: -100%;
-  width: 100%; height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(14,165,233,.15), transparent);
-  animation: sweep 2.5s ease-in-out infinite;
-}
-.pipe-stage:nth-child(2)::before { animation-delay: .4s; }
-.pipe-stage:nth-child(3)::before { animation-delay: .8s; }
-.pipe-stage:nth-child(4)::before { animation-delay: 1.2s; }
-.pipe-stage:nth-child(5)::before { animation-delay: 1.6s; }
-
-@keyframes sweep {
-  0% { left: -100%; }
-  50% { left: 100%; }
-  100% { left: 100%; }
-}
-
-.pipe-stage:hover {
-  transform: translateX(4px);
-  box-shadow: var(--shadow-sm);
-}
-
-.ps-data     { background: #f0fdf4; border-color: var(--success); }
-.ps-prep     { background: #f0f9ff; border-color: var(--accent); }
-.ps-model    { background: #faf0ff; border-color: #9333ea; }
-.ps-deploy   { background: #fff7ed; border-color: var(--warn); }
-.ps-zta      { background: #fef2f2; border-color: var(--red); }
-
-.ps-icon { font-size: 16px; flex-shrink: 0; }
-.ps-label {
-  font-size: 9.5px;
-  font-weight: 700;
-  color: var(--text-dark);
-  display: block;
-}
-.ps-desc { font-size: 8.2px; color: var(--text-light); display: block; }
-.ps-arrow {
-  text-align: center;
-  color: var(--accent);
-  font-size: 11px;
-  line-height: 1;
-  margin: 1px 0;
-}
-
-/* LSTM Architecture diagram */
-.lstm-arch {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  justify-content: center;
-  flex-wrap: nowrap;
-  margin: 6px 0;
-}
-.lstm-layer {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 3px;
-}
-.lstm-box {
-  border-radius: 6px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 8px;
-  font-weight: 700;
-  color: #fff;
-  padding: 4px 6px;
-  text-align: center;
-  min-width: 44px;
-  box-shadow: var(--shadow-sm);
-  cursor: default;
-  transition: transform .2s, box-shadow .2s;
-}
-.lstm-box:hover { transform: scale(1.08); box-shadow: var(--shadow-md); }
-.lb-input  { background: var(--success); height: 30px; }
-.lb-l1     { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-mid) 100%); height: 50px; }
-.lb-l2     { background: linear-gradient(135deg, var(--primary-mid) 0%, #3b6daa 100%); height: 40px; }
-.lb-l3     { background: linear-gradient(135deg, #3b6daa 0%, var(--accent) 100%); height: 32px; }
-.lb-drop   { background: var(--warn); height: 20px; font-size: 7px; }
-.lb-dense  { background: var(--accent); height: 26px; }
-.lb-output { background: var(--red); height: 30px; }
-
-.lstm-arrow { color: var(--text-light); font-size: 14px; line-height: 1; }
-.lstm-label { font-size: 7.5px; color: var(--text-light); text-align: center; }
-
-/* Hyperparameter table */
-.hp-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 8.8px;
-  margin-top: 4px;
-}
-.hp-table th {
-  background: var(--primary);
-  color: #fff;
-  padding: 4px 6px;
-  text-align: left;
-  font-weight: 600;
-  font-size: 8.5px;
-}
-.hp-table td {
-  padding: 3px 6px;
-  border-bottom: 1px solid #e8f0fe;
-  color: var(--text-mid);
-}
-.hp-table tr:nth-child(even) td { background: #f8fafc; }
-.hp-table tr:hover td { background: #e8f4fd; }
-.hp-table td:last-child { font-weight: 600; color: var(--primary); }
-
-/* LSTM Equations */
-.eq-box {
-  background: linear-gradient(135deg, #0f1f3d 0%, #1e3a5f 100%);
-  border-radius: var(--radius);
-  padding: 8px 10px;
-  margin: 6px 0;
-  font-family: 'Crimson Text', serif;
-  color: #e2e8f0;
-  font-size: 9px;
-  line-height: 1.7;
-}
-.eq-box .eq-title {
-  color: var(--accent-light);
-  font-size: 9.5px;
-  font-weight: 700;
-  margin-bottom: 4px;
-  display: block;
-}
-.eq-box .eq { color: #f1f5f9; font-style: italic; }
-.eq-box .eq .var { color: var(--accent-light); }
-.eq-box .eq .gate { color: var(--warn-light); }
-
-/* ================================================================
-   RESULTS COLUMN
-================================================================ */
-/* KPI Metric Cards */
-.metrics-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 6px;
-  margin-bottom: 8px;
-}
-.metric-card {
-  border-radius: var(--radius-lg);
-  padding: 10px 8px;
-  text-align: center;
-  position: relative;
-  overflow: hidden;
-  cursor: default;
-  transition: transform .25s, box-shadow .25s;
-  box-shadow: var(--shadow-sm);
-}
-.metric-card:hover {
-  transform: scale(1.06) translateY(-2px);
-  box-shadow: var(--shadow-lg);
-}
-.metric-card::before {
-  content: '';
-  position: absolute;
-  top: -30px; right: -30px;
-  width: 80px; height: 80px;
-  border-radius: 50%;
-  background: rgba(255,255,255,.10);
-  pointer-events: none;
-}
-.mc-lstm { background: linear-gradient(135deg, #14532d 0%, var(--success) 100%); color: #fff; }
-.mc-cnn  { background: linear-gradient(135deg, #1e3a5f 0%, #0ea5e9 100%); color: #fff; }
-.mc-dt   { background: linear-gradient(135deg, #78350f 0%, var(--warn) 100%); color: #fff; }
-.mc-svm  { background: linear-gradient(135deg, #7c1d1d 0%, #ef4444 100%); color: #fff; }
-
-.metric-card .mc-model {
-  font-size: 8px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  opacity: .85;
-  display: block;
-}
-.metric-card .mc-val {
-  font-family: 'Crimson Text', serif;
-  font-size: 32px;
-  font-weight: 700;
-  line-height: 1;
-  display: block;
-  margin: 4px 0 2px;
-}
-.metric-card .mc-sub {
-  font-size: 8px;
-  opacity: .80;
-  display: block;
-}
-.mc-all-badge {
-  background: rgba(255,255,255,.20);
-  border-radius: 3px;
-  padding: 1px 4px;
-  font-size: 7.5px;
-  font-weight: 700;
-  letter-spacing: .5px;
-  display: inline-block;
-  margin-top: 3px;
-}
-
-/* Dataset stats strip */
-.dataset-strip {
-  display: flex;
-  gap: 5px;
-  flex-wrap: wrap;
-  margin-bottom: 7px;
-}
-.ds-stat {
-  background: linear-gradient(135deg, #e8f0fe 0%, #d4e8fc 100%);
-  border: 1px solid #93c5fd;
-  border-radius: var(--radius);
-  padding: 5px 8px;
-  text-align: center;
-  flex: 1;
-  min-width: 60px;
-  cursor: default;
-  transition: all .25s;
-}
-.ds-stat:hover {
-  background: linear-gradient(135deg, #bfdbfe 0%, #93c5fd 100%);
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-sm);
-}
-.ds-stat .dsv {
-  font-family: 'Crimson Text', serif;
-  font-size: 16px;
-  font-weight: 700;
-  color: var(--primary);
-  display: block;
-  line-height: 1.1;
-}
-.ds-stat .dsl {
-  font-size: 7.5px;
-  color: var(--text-light);
-  text-transform: uppercase;
-  letter-spacing: .5px;
-}
-
-/* Chart container */
-.chart-container {
-  position: relative;
-  height: 160px;
-  margin-top: 6px;
-}
-
-/* Confusion matrix image */
-.cm-wrap {
-  border-radius: var(--radius);
-  overflow: hidden;
-  cursor: zoom-in;
-  transition: transform .3s, box-shadow .3s;
-  box-shadow: var(--shadow-sm);
-  position: relative;
-}
-.cm-wrap:hover {
-  transform: scale(1.03);
-  box-shadow: var(--shadow-lg);
-}
-.cm-wrap img {
-  width: 100%;
-  display: block;
-  border-radius: var(--radius);
-}
-.cm-wrap .cm-caption {
-  position: absolute;
-  bottom: 0; left: 0; right: 0;
-  background: rgba(30,58,95,.75);
-  color: #fff;
-  font-size: 8px;
-  text-align: center;
-  padding: 4px;
-  transform: translateY(100%);
-  transition: transform .3s;
-}
-.cm-wrap:hover .cm-caption { transform: translateY(0); }
-
-/* Stat significance banner */
-.sig-banner {
-  background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
-  border: 1.5px solid var(--success);
-  border-radius: var(--radius);
-  padding: 6px 10px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-top: 6px;
-}
-.sig-banner .sig-icon { font-size: 20px; }
-.sig-banner .sig-text .sig-label {
-  font-size: 9px;
-  font-weight: 700;
-  color: var(--success);
-  display: block;
-}
-.sig-banner .sig-text p { font-size: 8.5px; color: #166534; margin: 0; }
-
-/* ================================================================
-   ANALYSIS COLUMN
-================================================================ */
-/* Class-wise table */
-.cw-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 8.5px;
-}
-.cw-table thead th {
-  background: var(--primary);
-  color: #fff;
-  padding: 4px 5px;
-  font-weight: 600;
-  font-size: 8px;
-  text-align: center;
-}
-.cw-table thead th:first-child { text-align: left; }
-.cw-table td {
-  padding: 3.5px 5px;
-  border-bottom: 1px solid #e2e8f0;
-  text-align: center;
-  color: var(--text-mid);
-}
-.cw-table td:first-child { text-align: left; font-weight: 600; color: var(--text-dark); }
-.cw-table tr:nth-child(even) td { background: #f8fafc; }
-.cw-table tr:hover td { background: #e0f2fe; }
-.cw-table .perfect { color: var(--success); font-weight: 700; }
-.cw-table .high    { color: var(--accent); font-weight: 600; }
-.cw-table .med     { color: var(--warn); font-weight: 600; }
-
-/* Training curve images */
-.img-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 5px;
-}
-.img-frame {
-  border-radius: var(--radius);
-  overflow: hidden;
-  cursor: zoom-in;
-  border: 1.5px solid var(--panel-border);
-  position: relative;
-  transition: all .3s;
-  box-shadow: var(--shadow-sm);
-}
-.img-frame:hover {
-  transform: scale(1.04);
-  border-color: var(--accent);
-  box-shadow: var(--shadow-md);
-}
-.img-frame img { width: 100%; display: block; }
-.img-frame .img-cap {
-  background: var(--primary);
-  color: #fff;
-  font-size: 7.5px;
-  text-align: center;
-  padding: 3px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: .5px;
-}
-
-/* SOTA table */
-.sota-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 8.5px;
-}
-.sota-table thead th {
-  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-mid) 100%);
-  color: #fff;
-  padding: 4px 6px;
-  font-weight: 600;
-  font-size: 8px;
-}
-.sota-table td {
-  padding: 3.5px 6px;
-  border-bottom: 1px solid #e2e8f0;
-  color: var(--text-mid);
-}
-.sota-table tr:nth-child(even) td { background: #f8fafc; }
-.sota-table tr:hover td { background: #e0f2fe; }
-.sota-table .winner td { background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); font-weight: 700; color: var(--success); }
-.sota-table .winner td:first-child { color: var(--success); }
-.sota-badge {
-  background: var(--success);
-  color: #fff;
-  border-radius: 3px;
-  padding: 1px 5px;
-  font-size: 7px;
-  font-weight: 700;
-  letter-spacing: .5px;
-}
-
-/* Deployment info */
-.deploy-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 5px;
-  margin-top: 5px;
-}
-.deploy-card {
-  background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
-  border: 1px solid #bae6fd;
-  border-radius: var(--radius);
-  padding: 6px 5px;
-  text-align: center;
-  cursor: default;
-  transition: all .25s;
-}
-.deploy-card:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-sm);
-  border-color: var(--accent);
-}
-.deploy-card .dc-icon { font-size: 18px; display: block; margin-bottom: 3px; }
-.deploy-card .dc-label {
-  font-size: 8px;
-  font-weight: 700;
-  color: var(--primary);
-  text-transform: uppercase;
-  letter-spacing: .4px;
-}
-.deploy-card .dc-val {
-  font-size: 8px;
-  color: var(--text-light);
-  display: block;
-  margin-top: 2px;
-}
-
-/* ================================================================
-   FOOTER
-================================================================ */
-.poster-footer {
-  background: linear-gradient(135deg, #0f1f3d 0%, #1e3a5f 100%);
-  padding: 10px 24px;
-  display: grid;
-  grid-template-columns: 1.3fr 1fr 1fr 1fr 0.8fr;
-  gap: 16px;
-  align-items: start;
-}
-
-.footer-section-title {
-  font-size: 9.5px;
-  font-weight: 700;
-  color: var(--accent-light);
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  margin-bottom: 5px;
-  display: block;
-  border-bottom: 1px solid rgba(14,165,233,.3);
-  padding-bottom: 3px;
-}
-
-.footer-text {
-  font-size: 8.5px;
-  color: rgba(255,255,255,.80);
-  line-height: 1.55;
-}
-.footer-text li { margin-bottom: 3px; color: rgba(255,255,255,.75); }
-
-.footer-refs .ref-item {
-  font-size: 7.8px;
-  color: rgba(255,255,255,.65);
-  margin-bottom: 3px;
-  padding-left: 12px;
-  position: relative;
-  line-height: 1.4;
-}
-.footer-refs .ref-item::before {
-  content: '[' attr(data-n) ']';
-  position: absolute;
-  left: 0;
-  color: var(--accent-light);
-  font-size: 7.5px;
-  font-weight: 700;
-}
-
-.footer-contact .contact-item {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  margin-bottom: 4px;
-}
-.footer-contact .ci-icon { font-size: 11px; }
-.footer-contact .ci-text { font-size: 8.5px; color: rgba(255,255,255,.80); }
-
-.footer-qr-col {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  align-items: center;
-}
-.footer-qr-box {
-  background: #fff;
-  border-radius: 6px;
-  padding: 6px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 3px;
-  cursor: pointer;
-  transition: transform .2s, box-shadow .2s;
-  text-decoration: none;
-  width: 100%;
-}
-.footer-qr-box:hover {
-  transform: scale(1.04);
-  box-shadow: 0 4px 16px rgba(14,165,233,.4);
-}
-.footer-qr-box .fqr-label {
-  font-size: 8px;
-  font-weight: 700;
-  color: var(--primary);
-  text-transform: uppercase;
-  letter-spacing: .5px;
-}
-.footer-qr-box .fqr-url {
-  font-size: 7px;
-  color: var(--accent);
-  word-break: break-all;
-  text-align: center;
-}
-
-/* QR pattern SVG inline */
-.qr-pattern {
-  width: 50px; height: 50px;
-}
-
-/* Acknowledgement / future-work tags */
-.tag-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 3px;
-  margin-top: 4px;
-}
-.tag {
-  background: rgba(14,165,233,.2);
-  border: 1px solid rgba(14,165,233,.4);
-  border-radius: 3px;
-  padding: 2px 6px;
-  font-size: 7.8px;
-  color: var(--accent-light);
-  white-space: nowrap;
-}
-
-/* ================================================================
-   ANIMATIONS
-================================================================ */
-@keyframes countUp {
-  from { opacity: 0; transform: translateY(10px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-.metric-card .mc-val { animation: countUp .6s ease-out both; }
-.metric-card:nth-child(1) .mc-val { animation-delay: .2s; }
-.metric-card:nth-child(2) .mc-val { animation-delay: .4s; }
-.metric-card:nth-child(3) .mc-val { animation-delay: .6s; }
-.metric-card:nth-child(4) .mc-val { animation-delay: .8s; }
-
-@keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-.panel { animation: fadeInUp .5s ease-out both; }
-.col:nth-child(1) .panel { animation-delay: calc(var(--i, 0) * .1s); }
-.col:nth-child(2) .panel { animation-delay: calc(.15s + var(--i, 0) * .1s); }
-.col:nth-child(3) .panel { animation-delay: calc(.3s + var(--i, 0) * .1s); }
-.col:nth-child(4) .panel { animation-delay: calc(.45s + var(--i, 0) * .1s); }
-
-/* Pulse dot indicator */
-@keyframes pulse-dot {
-  0%, 100% { transform: scale(1); opacity: 1; }
-  50% { transform: scale(1.3); opacity: .7; }
-}
-.live-dot {
-  display: inline-block;
-  width: 7px; height: 7px;
-  border-radius: 50%;
-  background: var(--success-light);
-  animation: pulse-dot 1.5s ease-in-out infinite;
-  margin-right: 4px;
-  vertical-align: middle;
-}
-
-/* ================================================================
-   FLIP CARDS (hover expand)
-================================================================ */
-.flip-card {
-  perspective: 600px;
-  height: 70px;
-  margin-bottom: 5px;
-}
-.flip-card-inner {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  transition: transform .5s cubic-bezier(.4,0,.2,1);
-  transform-style: preserve-3d;
-}
-.flip-card:hover .flip-card-inner { transform: rotateY(180deg); }
-.flip-card-front, .flip-card-back {
-  position: absolute;
-  width: 100%; height: 100%;
-  border-radius: var(--radius);
-  backface-visibility: hidden;
-  padding: 8px 10px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-.flip-card-front {
-  background: linear-gradient(135deg, #e8f0fe 0%, #dbeafe 100%);
-  border: 1px solid #93c5fd;
-}
-.flip-card-back {
-  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-mid) 100%);
-  border: 1px solid var(--accent);
-  transform: rotateY(180deg);
-}
-.fc-front-title {
-  font-size: 10px;
-  font-weight: 700;
-  color: var(--primary);
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
-.fc-front-sub { font-size: 8.5px; color: var(--text-light); margin-top: 2px; }
-.fc-back-text { font-size: 8.5px; color: #e2e8f0; line-height: 1.55; }
-
-/* ================================================================
-   SCROLLBAR (hidden for poster look)
-================================================================ */
-body::-webkit-scrollbar { width: 8px; }
-body::-webkit-scrollbar-track { background: #1e3a5f; }
-body::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 4px; }
-
-/* ================================================================
-   PRINT STYLES
-================================================================ */
-@media print {
-  @page {
-    size: 1189mm 841mm landscape;
-    margin: 0;
-  }
-  html { font-size: 10.5px; background: #fff; }
-  body { margin: 0; padding: 0; }
-  .print-bar { display: none !important; }
-  .poster {
-    width: 1189mm;
-    min-height: 841mm;
-    margin: 0;
-    box-shadow: none;
-    page-break-inside: avoid;
-  }
-  .pipe-stage::before { display: none; }
-  .panel { animation: none !important; break-inside: avoid; }
-  .metric-card .mc-val { animation: none !important; }
-  * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
-  .flip-card { height: auto; }
-  .flip-card-inner { transform: none !important; }
-  .flip-card-back { display: none; }
+/* ── PRINT ───────────────────────────────────────────── */
+@media print{
+  @page{size:48in 36in landscape;margin:0}
+  .dl-fab,.dl-overlay{display:none!important}
+  html,body{background:#fff}
+  .poster{box-shadow:none;max-width:none;width:100%;aspect-ratio:4/3}
 }
 </style>
 </head>
 <body>
 
-<!-- ── PRINT BAR ── -->
-<div class="print-bar">
-  <button class="btn-print" onclick="window.print()">&#128438; Print Poster</button>
-  <button class="btn-dl" onclick="alert('Right-click the page and choose Save As to download the HTML poster.')">&#8681; Download</button>
+<!-- Download button -->
+<button class="dl-fab" onclick="openGate()">&#11015; Download Poster PDF</button>
+
+<!-- ═══════ GATE MODAL ═══════ -->
+<div id="dl-overlay" class="dl-overlay dl-hidden" role="dialog" aria-modal="true">
+  <div class="dl-modal">
+    <button class="dl-close" onclick="closeGate()">&times;</button>
+    <div class="dl-hdr">
+      <span class="dl-icon">&#128274;</span>
+      <h2 class="dl-title">Poster Download Access</h2>
+      <p class="dl-sub">Complete all three steps to download the conference poster PDF.</p>
+    </div>
+
+    <div class="dl-step" id="dl-s1">
+      <div class="dl-badge">Step 1 of 3</div>
+      <h3 class="dl-stitle">&#128279; Follow on GitHub</h3>
+      <p class="dl-desc">Follow the author's GitHub to stay updated with research releases.</p>
+      <a href="https://github.com/ANIS151993" target="_blank" class="dl-btn-p">Open GitHub Profile &#8599;</a>
+      <button class="dl-btn-n" onclick="dlGo(2)">I have followed &rarr;</button>
+    </div>
+
+    <div class="dl-step dl-hidden" id="dl-s2">
+      <div class="dl-badge">Step 2 of 3</div>
+      <h3 class="dl-stitle">&#127909; Subscribe on YouTube</h3>
+      <p class="dl-desc">Subscribe for video walkthroughs and future research updates.</p>
+      <a href="https://youtu.be/K04bOFbv204" target="_blank" class="dl-btn-p">Open YouTube Channel &#8599;</a>
+      <button class="dl-btn-n" onclick="dlGo(3)">I have subscribed &rarr;</button>
+    </div>
+
+    <div class="dl-step dl-hidden" id="dl-s3">
+      <div class="dl-badge">Step 3 of 3</div>
+      <h3 class="dl-stitle">&#128273; Enter Access Password</h3>
+      <p class="dl-desc">Request your password via email with GitHub username &amp; YouTube confirmation.</p>
+      <a href="mailto:engr.aanis@gmail.com?subject=Poster%20PDF%20Access%20Request&body=Hello%2C%0A%0AI%20have%20completed%3A%0A1.%20GitHub%20Follow%3A%20%5BYour%20GitHub%20username%5D%0A2.%20YouTube%20Subscribe%3A%20Confirmed%0A%0APlease%20send%20the%20access%20password%20for%20the%20SIF%20Conference%20Poster.%0A%0AThank%20you."
+         class="dl-btn-r">&#9993; Send Password Request Email</a>
+      <div class="dl-div"><span>then enter password below</span></div>
+      <div class="dl-pw">
+        <input type="password" id="dl-pw-inp" class="dl-inp"
+               placeholder="Enter access password…"
+               onkeydown="if(event.key==='Enter') dlCheck()"/>
+        <button class="dl-btn-p" onclick="dlCheck()">&#128275; Unlock &amp; Download</button>
+      </div>
+      <p id="dl-err" class="dl-err dl-hidden">Incorrect password. Please check your email and try again.</p>
+    </div>
+
+    <div class="dl-step dl-hidden" id="dl-s-ok">
+      <span class="dl-icon" style="text-align:center;display:block">&#9989;</span>
+      <h3 class="dl-stitle" style="color:#15803d;text-align:center">Access Granted!</h3>
+      <p class="dl-desc" style="text-align:center">Download starts automatically. Thank you for supporting open research.</p>
+      <a id="dl-lnk" href="assets/papers/SIF-Conference-Poster-2026.pdf" download class="dl-btn-p">&#11015; Download Poster PDF</a>
+      <button class="dl-btn-n" onclick="closeGate()">Close</button>
+    </div>
+
+    <div class="dl-dots">
+      <span class="dl-dot on" id="dd1"></span>
+      <span class="dl-dot" id="dd2"></span>
+      <span class="dl-dot" id="dd3"></span>
+    </div>
+  </div>
 </div>
 
-<!-- ════════════════════════════════════════════════════════════════
-     POSTER WRAPPER
-════════════════════════════════════════════════════════════════ -->
+<!-- ═══════════════════════════════════════════════════════════
+     POSTER
+═══════════════════════════════════════════════════════════ -->
 <div class="poster">
+  <div class="poster-bg"></div>
 
-  <!-- ──────────────────── HEADER ──────────────────── -->
-  <header class="poster-header">
-
-    <!-- IEEE Badge -->
-    <div class="ieee-badge">
-      <span class="ieee-logo">IEEE</span>
-      <span class="ieee-sub">Published</span>
-      <span class="ieee-year">2025</span>
+  <!-- ── HEADER ── -->
+  <div class="hdr">
+    <div class="hdr-logo">
+      <img src="assets/images/gannon-logo.png" alt="Gannon University"/>
+      <span>Gannon University<br/>Erie, PA 16541</span>
     </div>
 
-    <!-- Title + Authors -->
-    <div class="header-center">
-      <h1 class="poster-title">
-        Towards a <span>Serverless Intelligent Firewall</span>:<br>
+    <div class="hdr-center">
+      <div class="hdr-title">
+        Towards a Serverless Intelligent Firewall:<br/>
         AI-Driven Security, and Zero-Trust Architectures
-      </h1>
-      <div class="authors-line">
-        <span class="corresponding">Md Anisur Rahman Chowdhury</span><sup>1*</sup>,&nbsp;
-        Hoang Nam Dang<sup>1</sup>,&nbsp;
-        Dr. Ronny Bazan-Antequera<sup>1</sup>,&nbsp;
-        Md. Sayham Khan<sup>2</sup>,&nbsp;
-        Md Razaul Karim<sup>2</sup>,&nbsp;
-        Dr. Sheheeda Manakkadu<sup>1</sup>
       </div>
-      <div class="affil-line">
-        <sup>1</sup> Gannon University, Erie, Pennsylvania, USA &nbsp;|&nbsp;
-        <sup>2</sup> University of the Potomac, Washington D.C., USA &nbsp;|&nbsp;
-        <sup>*</sup> Corresponding Author
+      <div class="hdr-authors">
+        <div class="hdr-author">
+          <div class="name">Md Anisur Rahman Chowdhury</div>
+          <div class="detail">Student ID: 3195493 &nbsp;·&nbsp; chowdhur014@gannon.edu &nbsp;·&nbsp; Master's of Information Technology</div>
+        </div>
+        <div class="hdr-author">
+          <div class="name">Aishwarya</div>
+          <div class="detail">Student ID: 3214245 &nbsp;·&nbsp; aishwary001@gannon.edu &nbsp;·&nbsp; Master's of Software Engineering</div>
+        </div>
+      </div>
+      <div class="hdr-advisor">
+        Professor: Ronny C. Bazan-Antequera, Ph.D. &nbsp;·&nbsp; bazanant001@gannon.edu &nbsp;·&nbsp;
+        Department of Computer and Information Science, College of Engineering &amp; Business, Gannon University
       </div>
     </div>
 
-    <!-- Links -->
-    <div class="header-links">
-      <a class="link-box" href="https://github.com/ANIS151993/Serverless-Intelligent-Firewall-Research-1" target="_blank">
-        <div class="qr-icon">
-          <!-- GitHub SVG icon -->
-          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.008-.868-.013-1.703-2.782.604-3.369-1.342-3.369-1.342-.454-1.155-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.831.092-.646.35-1.086.636-1.336-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.272.098-2.65 0 0 .84-.269 2.75 1.025A9.564 9.564 0 0112 6.844a9.59 9.59 0 012.504.337c1.909-1.294 2.747-1.025 2.747-1.025.546 1.378.202 2.397.1 2.65.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z" fill="#1e3a5f"/>
-          </svg>
-        </div>
-        <div class="link-text">
-          <span class="lbl">GitHub Repository</span>
-          <span class="url">github.com/ANIS151993/SIF-R1</span>
-        </div>
-      </a>
-      <a class="link-box" href="https://youtu.be/K04bOFbv204" target="_blank">
-        <div class="qr-icon">
-          <!-- YouTube SVG icon -->
-          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M21.543 6.498C22 8.28 22 12 22 12s0 3.72-.457 5.502c-.254.985-.997 1.76-1.938 2.022C17.896 20 12 20 12 20s-5.893 0-7.605-.476c-.945-.266-1.687-1.04-1.938-2.022C2 15.72 2 12 2 12s0-3.72.457-5.502c.254-.985.997-1.76 1.938-2.022C6.107 4 12 4 12 4s5.896 0 7.605.476c.945.266 1.687 1.04 1.938 2.022zM10 15.5l6-3.5-6-3.5v7z" fill="#dc2626"/>
-          </svg>
-        </div>
-        <div class="link-text">
-          <span class="lbl">Video Presentation</span>
-          <span class="url">youtu.be/K04bOFbv204</span>
-        </div>
-      </a>
+    <div class="hdr-right">
+      <span class="badge badge-cg">CG 2026</span>
+      <span class="badge badge-ieee">&#9733; Published IEEE 2025</span>
     </div>
-  </header>
-  <div class="header-accent-strip"></div>
+  </div>
 
-  <!-- ──────────────────── BODY GRID ──────────────────── -->
-  <main class="poster-body">
+  <!-- ── BODY ── -->
+  <div class="body">
 
-    <!-- ══════════════════════════════════════════
-         COLUMN 1: INTRODUCTION & MOTIVATION
-    ══════════════════════════════════════════ -->
+    <!-- ═══ LEFT COLUMN ═══ -->
     <div class="col">
 
-      <!-- Problem Statement -->
-      <div class="panel" style="--i:0">
-        <div class="panel-title">
-          <div class="icon">!</div>
-          Introduction &amp; Motivation
-        </div>
-        <p>
-          The rapid adoption of <strong>cloud-native</strong> and <strong>microservices architectures</strong> has
-          fundamentally disrupted traditional perimeter-based network security models. Legacy firewalls, designed
-          for static on-premise environments, fail to scale dynamically with ephemeral serverless workloads.
-        </p>
-        <p style="margin-top:5px;">
-          Simultaneously, modern cyber threats have grown in sophistication—DDoS attacks, port scanning,
-          brute-force intrusions, and web-based exploits bypass static rule-based systems with increasing ease.
-          <strong>Machine learning</strong> offers a principled solution: pattern recognition across millions of
-          network flows to classify malicious behavior in real time.
-        </p>
-      </div>
-
-      <!-- Motivation Cards -->
-      <div class="panel" style="--i:1">
-        <div class="panel-title"><div class="icon">&#9881;</div>Key Challenges</div>
-        <div class="motivation-grid">
-          <div class="motiv-card" data-tooltip="Traditional firewalls cannot scale with serverless workloads and micro-bursting traffic patterns">
-            <span class="mc-icon">&#9888;&#65039;</span>
-            <span class="mc-label">Static Firewalls</span>
-            <span class="mc-desc">Fail in elastic cloud environments</span>
-          </div>
-          <div class="motiv-card" data-tooltip="Signature-based IDS miss zero-day exploits and novel attack vectors">
-            <span class="mc-icon">&#128683;</span>
-            <span class="mc-label">Rule-Based IDS</span>
-            <span class="mc-desc">Miss zero-day &amp; polymorphic attacks</span>
-          </div>
-          <div class="motiv-card" data-tooltip="Serverless cold starts and ephemeral containers make identity verification harder">
-            <span class="mc-icon">&#9729;&#65039;</span>
-            <span class="mc-label">Serverless Trust</span>
-            <span class="mc-desc">No persistent identity boundary</span>
-          </div>
-          <div class="motiv-card" data-tooltip="Existing DL models lack serverless-native deployment pipelines for production use">
-            <span class="mc-icon">&#128200;</span>
-            <span class="mc-label">Deployment Gap</span>
-            <span class="mc-desc">DL models not production-ready</span>
-          </div>
+      <div class="box">
+        <div class="bh">Abstract</div>
+        <div class="bb">
+          <p>The ephemeral, stateless nature of serverless computing presents unprecedented challenges to traditional network security. Conventional perimeter-based defenses and rule-based IDS are ill-equipped to protect transient, event-driven functions lacking persistent state.</p>
+          <p>This research presents a <strong>Serverless Intelligent Firewall (SIF)</strong> combining <strong>LSTM-based deep learning</strong> intrusion detection with <strong>Zero-Trust Architecture (ZTA)</strong> enforcement for adaptive, real-time threat detection in cloud-native environments.</p>
+          <p>The 3-layer LSTM achieved <strong>98% accuracy, precision, recall, and F1-score</strong> on CICIDS2017, outperforming SVM (88.4%), Decision Tree (90.2%), and CNN (93%).</p>
+          <p><span class="kw">Keywords:</span> Serverless · LSTM · Zero-Trust · IDS · CICIDS2017 · AWS Lambda</p>
         </div>
       </div>
 
-      <!-- ZTA Gap -->
-      <div class="panel" style="--i:2">
-        <div class="panel-title"><div class="icon">&#128274;</div>Zero-Trust Architecture Gap</div>
-        <div class="zta-gap">
-          <div class="gap-title">&#9888; The ZTA-Serverless Disconnect</div>
-          <p>
-            NIST SP 800-207 mandates Zero-Trust for federal systems, yet existing ZTA frameworks assume
-            persistent workload identity. <strong>Serverless functions</strong> violate this assumption:
-            they spin up in milliseconds, share execution environments, and lack static IP identifiers—
-            creating a critical enforcement gap.
-          </p>
-        </div>
-        <p style="margin-top:6px;">
-          This research bridges the gap by embedding an <strong>AI-driven traffic classifier</strong>
-          directly into the serverless execution pipeline, enforcing ZTA principles at the network-flow
-          level without relying on static perimeter controls.
-        </p>
-      </div>
-
-      <!-- Contributions -->
-      <div class="panel" style="--i:3">
-        <div class="panel-title"><div class="icon">&#9733;</div>Key Contributions</div>
-        <ul class="contrib-list">
-          <li>Deep LSTM model achieving <strong>98% accuracy</strong> on CICIDS2017 with all four metrics at parity—F1, Precision, Recall, Accuracy.</li>
-          <li>First serverless-native IDS deployment on <strong>AWS Lambda + Docker</strong> with sub-100 ms inference latency.</li>
-          <li>Integration framework mapping LSTM classifier outputs to <strong>ZTA policy enforcement</strong> actions.</li>
-          <li>Rigorous <strong>statistical validation</strong> (p &lt; 0.05) against SVM, DT, and CNN baselines on identical data splits.</li>
-          <li>Open-source codebase and reproducible Docker container for community adoption.</li>
-        </ul>
-      </div>
-
-      <!-- Flip cards: ZTA principles -->
-      <div class="panel" style="--i:4">
-        <div class="panel-title"><div class="icon">&#128275;</div>ZTA Principles Applied</div>
-        <div class="flip-card" data-tooltip="Hover to learn more">
-          <div class="flip-card-inner">
-            <div class="flip-card-front">
-              <div class="fc-front-title">&#128272; Never Trust, Always Verify</div>
-              <div class="fc-front-sub">Core ZTA tenet applied at every function invocation</div>
-            </div>
-            <div class="flip-card-back">
-              <div class="fc-back-text">Each Lambda invocation is treated as untrusted. The LSTM classifier re-validates the traffic signature before granting access, regardless of source IP or prior session state.</div>
-            </div>
-          </div>
-        </div>
-        <div class="flip-card">
-          <div class="flip-card-inner">
-            <div class="flip-card-front">
-              <div class="fc-front-title">&#128203; Least Privilege Access</div>
-              <div class="fc-front-sub">ML-driven dynamic policy scoping</div>
-            </div>
-            <div class="flip-card-back">
-              <div class="fc-back-text">Traffic classified as benign receives minimal necessary permissions. Anomalous flows trigger automated IAM policy restriction via AWS Security Hub integration.</div>
-            </div>
-          </div>
-        </div>
-        <div class="flip-card">
-          <div class="flip-card-inner">
-            <div class="flip-card-front">
-              <div class="fc-front-title">&#128202; Assume Breach</div>
-              <div class="fc-front-sub">Continuous re-authentication every flow</div>
-            </div>
-            <div class="flip-card-back">
-              <div class="fc-back-text">The system assumes any flow could be malicious. LSTM classifies 78-feature vectors from every packet batch, triggering micro-segmentation actions on anomaly detection.</div>
-            </div>
-          </div>
+      <div class="box grow">
+        <div class="bh">Research Objectives / Purpose of the Study</div>
+        <div class="bb">
+          <ul>
+            <li>Design a <strong>deep learning IDS</strong> optimized for stateless serverless cloud environments</li>
+            <li>Develop an <strong>LSTM architecture</strong> capturing temporal flow dependencies for coordinated attack detection</li>
+            <li>Implement <strong>strategic undersampling</strong> to resolve class imbalance across 2.8M CICIDS2017 records</li>
+            <li>Benchmark against <strong>SVM, Decision Tree, and CNN</strong> using standardized evaluation metrics</li>
+            <li>Integrate <strong>NIST SP 800-207 Zero-Trust</strong> — continuous verification, least-privilege, breach assumption</li>
+            <li>Deploy on <strong>AWS Lambda</strong> demonstrating &lt;100 ms real-time inference latency</li>
+          </ul>
         </div>
       </div>
 
-    </div><!-- /col 1 -->
+      <div class="box">
+        <div class="bh">Research Questions</div>
+        <div class="bb">
+          <ul>
+            <li><strong>RQ1:</strong> Can serverless architectures maintain &lt;100 ms inference latency for real-time IDS?</li>
+            <li><strong>RQ2:</strong> Does LSTM provide superior accuracy over CNN/SVM/DT on CICIDS2017?</li>
+            <li><strong>RQ3:</strong> Can ZTA be integrated without significant operational overhead?</li>
+          </ul>
+          <div class="hl">All three answered affirmatively — statistically significant (p &lt; 0.05).</div>
+        </div>
+      </div>
 
-    <!-- ══════════════════════════════════════════
-         COLUMN 2: METHODOLOGY
-    ══════════════════════════════════════════ -->
+      <div class="box">
+        <div class="bh">Dataset — CICIDS2017</div>
+        <div class="bb">
+          <table class="tbl">
+            <tbody>
+              <tr><td><strong>Total Records</strong></td><td>2,830,540 flow records</td></tr>
+              <tr><td><strong>Features</strong></td><td>78 numerical traffic features</td></tr>
+              <tr><td><strong>Classes</strong></td><td>BENIGN · DDoS · DoS · PortScan · Other</td></tr>
+              <tr><td><strong>Balancing</strong></td><td>Undersampled to 50,000 / class</td></tr>
+              <tr><td><strong>Split</strong></td><td>80% train / 20% test (stratified)</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div><!-- /LEFT -->
+
+    <!-- ═══ CENTER COLUMN — 2 feature boxes ═══ -->
     <div class="col">
 
-      <!-- Animated Pipeline -->
-      <div class="panel" style="--i:0">
-        <div class="panel-title"><div class="icon">&#9654;</div>System Pipeline</div>
-        <div class="pipeline-wrap">
+      <!-- CENTER BOX 1: Methodology -->
+      <div class="cbox">
+        <div class="bh">Methodology (An Overview)</div>
+        <div class="bb">
           <div class="pipeline">
-            <div class="pipe-stage ps-data" data-tooltip="CICIDS2017: 2.8M+ network flow records, 78 features, 5 traffic classes, collected over 5 days at Canadian Institute for Cybersecurity">
-              <span class="ps-icon">&#128196;</span>
-              <div>
-                <span class="ps-label">1. Dataset — CICIDS2017</span>
-                <span class="ps-desc">2.8M+ flows &nbsp;|&nbsp; 78 features &nbsp;|&nbsp; 5 classes</span>
-              </div>
+            <div class="ps"><i>&#128202;</i>CICIDS2017</div>
+            <span class="pa">&#8594;</span>
+            <div class="ps"><i>&#9881;</i>Pre-process &amp; Normalize</div>
+            <span class="pa">&#8594;</span>
+            <div class="ps"><i>&#129504;</i>LSTM Training</div>
+            <span class="pa">&#8594;</span>
+            <div class="ps"><i>&#9729;</i>AWS Lambda</div>
+            <span class="pa">&#8594;</span>
+            <div class="ps"><i>&#128274;</i>ZTA Enforce</div>
+          </div>
+
+          <div class="fig">
+            <img src="assets/images/architecture-diagram.png" alt="Architecture Diagram"/>
+            <div class="fig-cap">Fig. 1 — Serverless Intelligent Firewall system architecture</div>
+          </div>
+
+          <table class="tbl">
+            <thead><tr><th>LSTM Parameter</th><th>Value</th></tr></thead>
+            <tbody>
+              <tr><td>Input features</td><td>78 numerical flow features</td></tr>
+              <tr><td>Hidden units</td><td>3 layers: 128 → 64 → 32</td></tr>
+              <tr><td>Dropout</td><td>0.3 after each LSTM layer</td></tr>
+              <tr><td>Optimizer / LR</td><td>Adam · 0.001</td></tr>
+              <tr><td>Epochs / Patience</td><td>120 epochs · Early stop = 10</td></tr>
+              <tr><td>Lambda latency</td><td>&lt;15 ms warm · &lt;100 ms cold</td></tr>
+            </tbody>
+          </table>
+
+          <div class="fig-row">
+            <div class="fig">
+              <img src="assets/images/accuracy.png" alt="Accuracy Curves"/>
+              <div class="fig-cap">Fig. 2 — Training &amp; Validation Accuracy</div>
             </div>
-            <div class="ps-arrow">&#8659;</div>
-            <div class="pipe-stage ps-prep" data-tooltip="StandardScaler normalization, SMOTE oversampling for class imbalance, 80/20 stratified train-test split">
-              <span class="ps-icon">&#9881;</span>
-              <div>
-                <span class="ps-label">2. Preprocessing &amp; Feature Engineering</span>
-                <span class="ps-desc">StandardScaler &nbsp;|&nbsp; SMOTE &nbsp;|&nbsp; 80/20 split</span>
-              </div>
-            </div>
-            <div class="ps-arrow">&#8659;</div>
-            <div class="pipe-stage ps-model" data-tooltip="3-layer stacked LSTM: 128→64→32 hidden units, dropout 0.3, Adam optimizer lr=0.001, batch size 512, 50 epochs">
-              <span class="ps-icon">&#129504;</span>
-              <div>
-                <span class="ps-label">3. LSTM Model Training</span>
-                <span class="ps-desc">128&#8594;64&#8594;32 units &nbsp;|&nbsp; Dropout 0.3 &nbsp;|&nbsp; Adam</span>
-              </div>
-            </div>
-            <div class="ps-arrow">&#8659;</div>
-            <div class="pipe-stage ps-deploy" data-tooltip="Model serialized to TensorFlow SavedModel format, containerized with Docker, deployed to AWS Lambda with API Gateway trigger">
-              <span class="ps-icon">&#9729;</span>
-              <div>
-                <span class="ps-label">4. Serverless Deployment</span>
-                <span class="ps-desc">Docker &#8594; AWS Lambda &#8594; API Gateway</span>
-              </div>
-            </div>
-            <div class="ps-arrow">&#8659;</div>
-            <div class="pipe-stage ps-zta" data-tooltip="Classifier outputs mapped to ZTA enforcement: Benign→Allow, Attack→Block+Alert, triggers AWS Security Hub and WAF rules">
-              <span class="ps-icon">&#128274;</span>
-              <div>
-                <span class="ps-label">5. ZTA Policy Enforcement</span>
-                <span class="ps-desc">Block / Alert / Micro-segment &nbsp;|&nbsp; AWS WAF</span>
-              </div>
+            <div class="fig">
+              <img src="assets/images/loss.png" alt="Loss Curves"/>
+              <div class="fig-cap">Fig. 3 — Training &amp; Validation Loss</div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Dataset Details -->
-      <div class="panel" style="--i:1">
-        <div class="panel-title"><div class="icon">&#128200;</div>Dataset — CICIDS2017</div>
-        <div class="dataset-strip">
-          <div class="ds-stat" data-tooltip="Total network flow records across all traffic classes">
-            <span class="dsv">2.8M+</span>
-            <span class="dsl">Flows</span>
+      <!-- CENTER BOX 2: Results -->
+      <div class="cbox">
+        <div class="bh gold-head">Results &amp; Evaluation</div>
+        <div class="bb">
+          <div class="stats">
+            <div class="stat"><span class="sv">98%</span><span class="sl">Accuracy</span></div>
+            <div class="stat"><span class="sv">98%</span><span class="sl">Precision</span></div>
+            <div class="stat"><span class="sv">98%</span><span class="sl">Recall</span></div>
+            <div class="stat"><span class="sv">98%</span><span class="sl">F1-Score</span></div>
           </div>
-          <div class="ds-stat" data-tooltip="78 statistical flow-level features extracted by CICFlowMeter">
-            <span class="dsv">78</span>
-            <span class="dsl">Features</span>
-          </div>
-          <div class="ds-stat" data-tooltip="BENIGN, DoS, DDoS, PortScan, BruteForce">
-            <span class="dsv">5</span>
-            <span class="dsl">Classes</span>
-          </div>
-          <div class="ds-stat" data-tooltip="80% training, 20% testing with stratified sampling">
-            <span class="dsv">80/20</span>
-            <span class="dsl">Split</span>
-          </div>
-        </div>
-        <p>Traffic classes: <strong>BENIGN</strong>, <strong>DoS Hulk</strong>, <strong>DDoS</strong>,
-        <strong>PortScan</strong>, <strong>FTP-BruteForce</strong>. Collected over 5 days using
-        CICFlowMeter on a realistic network topology at the Canadian Institute for Cybersecurity.</p>
-      </div>
 
-      <!-- LSTM Architecture -->
-      <div class="panel" style="--i:2">
-        <div class="panel-title"><div class="icon">&#9632;</div>LSTM Architecture</div>
-        <div class="lstm-arch">
-          <div class="lstm-layer">
-            <div class="lstm-box lb-input" data-tooltip="Input: 78-feature normalized flow vector">Input<br>78-D</div>
-            <span class="lstm-label">Input Layer</span>
-          </div>
-          <div class="lstm-arrow">&#8594;</div>
-          <div class="lstm-layer">
-            <div class="lstm-box lb-l1" data-tooltip="LSTM Layer 1: 128 hidden units, tanh activation, return sequences=True">LSTM<br>128</div>
-            <span class="lstm-label">Layer 1</span>
-          </div>
-          <div class="lstm-arrow">&#8594;</div>
-          <div class="lstm-layer">
-            <div class="lstm-box lb-drop" data-tooltip="Dropout: 30% of neurons randomly zeroed during training to prevent overfitting">Drop<br>0.3</div>
-            <span class="lstm-label">Dropout</span>
-          </div>
-          <div class="lstm-arrow">&#8594;</div>
-          <div class="lstm-layer">
-            <div class="lstm-box lb-l2" data-tooltip="LSTM Layer 2: 64 hidden units, tanh activation, return sequences=True">LSTM<br>64</div>
-            <span class="lstm-label">Layer 2</span>
-          </div>
-          <div class="lstm-arrow">&#8594;</div>
-          <div class="lstm-layer">
-            <div class="lstm-box lb-drop" data-tooltip="Second dropout layer: 30%">Drop<br>0.3</div>
-            <span class="lstm-label">Dropout</span>
-          </div>
-          <div class="lstm-arrow">&#8594;</div>
-          <div class="lstm-layer">
-            <div class="lstm-box lb-l3" data-tooltip="LSTM Layer 3: 32 hidden units, tanh activation, return sequences=False">LSTM<br>32</div>
-            <span class="lstm-label">Layer 3</span>
-          </div>
-          <div class="lstm-arrow">&#8594;</div>
-          <div class="lstm-layer">
-            <div class="lstm-box lb-dense" data-tooltip="Dense output layer: 5 units, softmax activation for multi-class classification">Dense<br>5</div>
-            <span class="lstm-label">Output</span>
-          </div>
-          <div class="lstm-arrow">&#8594;</div>
-          <div class="lstm-layer">
-            <div class="lstm-box lb-output" data-tooltip="Softmax probability distribution over 5 traffic classes">&#963;<br>5-cls</div>
-            <span class="lstm-label">Softmax</span>
-          </div>
-        </div>
+          <table class="tbl">
+            <thead><tr><th>Model</th><th>Accuracy</th><th>Precision</th><th>Recall</th><th>F1</th></tr></thead>
+            <tbody>
+              <tr><td>SVM</td><td>88.4%</td><td>84.1%</td><td>77.8%</td><td>80.8%</td></tr>
+              <tr><td>Decision Tree</td><td>90.2%</td><td>87.6%</td><td>81.3%</td><td>84.3%</td></tr>
+              <tr><td>CNN</td><td>93.0%</td><td>95.1%</td><td>85.4%</td><td>89.9%</td></tr>
+              <tr class="best"><td><strong>LSTM (Proposed)</strong></td><td><strong>98.0%</strong></td><td><strong>98.0%</strong></td><td><strong>98.0%</strong></td><td><strong>98.0%</strong></td></tr>
+            </tbody>
+          </table>
 
-        <!-- LSTM Equations -->
-        <div class="eq-box">
-          <span class="eq-title">Core LSTM Gate Equations</span>
-          <div class="eq">
-            <span class="gate">f</span><sub>t</sub> = &#963;(<span class="var">W</span><sub>f</sub>[<span class="var">h</span><sub>t-1</sub>, <span class="var">x</span><sub>t</sub>] + <span class="var">b</span><sub>f</sub>)
-            &nbsp;&nbsp;
-            <span class="gate">i</span><sub>t</sub> = &#963;(<span class="var">W</span><sub>i</sub>[<span class="var">h</span><sub>t-1</sub>, <span class="var">x</span><sub>t</sub>] + <span class="var">b</span><sub>i</sub>)
+          <div class="fig-row">
+            <div class="fig">
+              <img src="assets/images/confusion-matrix.png" alt="Confusion Matrix"/>
+              <div class="fig-cap">Fig. 4 — Confusion Matrix</div>
+            </div>
+            <div class="fig">
+              <img src="assets/images/classwise-performance.png" alt="Class-wise Performance"/>
+              <div class="fig-cap">Fig. 5 — Class-wise Performance</div>
+            </div>
           </div>
-          <div class="eq">
-            <span class="gate">&#264;</span><sub>t</sub> = tanh(<span class="var">W</span><sub>c</sub>[<span class="var">h</span><sub>t-1</sub>, <span class="var">x</span><sub>t</sub>] + <span class="var">b</span><sub>c</sub>)
-            &nbsp;&nbsp;
-            <span class="var">C</span><sub>t</sub> = <span class="gate">f</span><sub>t</sub> &#8857; <span class="var">C</span><sub>t-1</sub> + <span class="gate">i</span><sub>t</sub> &#8857; <span class="gate">&#264;</span><sub>t</sub>
-          </div>
-          <div class="eq">
-            <span class="gate">o</span><sub>t</sub> = &#963;(<span class="var">W</span><sub>o</sub>[<span class="var">h</span><sub>t-1</sub>, <span class="var">x</span><sub>t</sub>] + <span class="var">b</span><sub>o</sub>)
-            &nbsp;&nbsp;
-            <span class="var">h</span><sub>t</sub> = <span class="gate">o</span><sub>t</sub> &#8857; tanh(<span class="var">C</span><sub>t</sub>)
-          </div>
+
+          <table class="tbl">
+            <thead><tr><th>Class</th><th>Precision</th><th>Recall</th><th>F1</th><th>Correct/Total</th></tr></thead>
+            <tbody>
+              <tr><td>BENIGN</td><td>0.99</td><td>0.94</td><td>0.96</td><td>9,446 / ~10,000</td></tr>
+              <tr><td>DDoS</td><td>0.99</td><td>1.00</td><td>0.99</td><td>9,989 / 10,000</td></tr>
+              <tr><td>DoS</td><td>0.98</td><td>0.99</td><td>0.98</td><td>9,909 / ~10,000</td></tr>
+              <tr><td>PortScan</td><td>0.99</td><td>1.00</td><td>0.99</td><td>9,982 / 10,000</td></tr>
+              <tr><td>Other</td><td>0.94</td><td>0.99</td><td>0.96</td><td>3,556 / 3,606</td></tr>
+              <tr class="best"><td><strong>Macro Avg</strong></td><td><strong>0.978</strong></td><td><strong>0.984</strong></td><td><strong>0.976</strong></td><td>—</td></tr>
+            </tbody>
+          </table>
         </div>
       </div>
 
-      <!-- Hyperparameter Table -->
-      <div class="panel" style="--i:3">
-        <div class="panel-title"><div class="icon">&#9881;</div>Hyperparameter Configuration</div>
-        <table class="hp-table">
-          <thead>
-            <tr><th>Parameter</th><th>Value</th></tr>
-          </thead>
-          <tbody>
-            <tr><td>Hidden Units (L1/L2/L3)</td><td>128 / 64 / 32</td></tr>
-            <tr><td>Dropout Rate</td><td>0.3</td></tr>
-            <tr><td>Optimizer</td><td>Adam</td></tr>
-            <tr><td>Learning Rate</td><td>0.001</td></tr>
-            <tr><td>Batch Size</td><td>512</td></tr>
-            <tr><td>Epochs</td><td>50</td></tr>
-            <tr><td>Loss Function</td><td>Categorical Cross-Entropy</td></tr>
-            <tr><td>Activation (output)</td><td>Softmax (5 classes)</td></tr>
-            <tr><td>Regularization</td><td>Dropout + Early Stop</td></tr>
-            <tr><td>Framework</td><td>TensorFlow 2.x / Keras</td></tr>
-          </tbody>
-        </table>
-      </div>
+    </div><!-- /CENTER -->
 
-    </div><!-- /col 2 -->
-
-    <!-- ══════════════════════════════════════════
-         COLUMN 3: RESULTS
-    ══════════════════════════════════════════ -->
+    <!-- ═══ RIGHT COLUMN ═══ -->
     <div class="col">
 
-      <!-- KPI Metric Cards -->
-      <div class="panel" style="--i:0">
-        <div class="panel-title"><div class="icon">&#9733;</div>Model Performance — Key Metrics</div>
-        <div class="metrics-grid">
-          <div class="metric-card mc-lstm"
-               data-tooltip="LSTM achieves 98% on ALL metrics: Accuracy, Precision, Recall, and F1-Score — demonstrating robust multi-class classification with no class-imbalance bias">
-            <span class="mc-model"><span class="live-dot"></span>LSTM (Ours)</span>
-            <span class="mc-val" data-target="98" id="val-lstm">98%</span>
-            <span class="mc-sub">Accuracy &bull; Precision &bull; Recall &bull; F1</span>
-            <span class="mc-all-badge">ALL METRICS</span>
-          </div>
-          <div class="metric-card mc-cnn"
-               data-tooltip="CNN achieved 93% accuracy by exploiting spatial feature correlations in the 78-feature input, but showed slight degradation on minority classes">
-            <span class="mc-model">CNN (Baseline)</span>
-            <span class="mc-val" data-target="93" id="val-cnn">93%</span>
-            <span class="mc-sub">Accuracy</span>
-          </div>
-          <div class="metric-card mc-dt"
-               data-tooltip="Decision Tree reached 90.2% accuracy with fast inference (< 1ms) but lower recall on complex attack patterns due to greedy split decisions">
-            <span class="mc-model">Decision Tree</span>
-            <span class="mc-val" data-target="90" id="val-dt">90.2%</span>
-            <span class="mc-sub">Accuracy</span>
-          </div>
-          <div class="metric-card mc-svm"
-               data-tooltip="SVM achieved 88.4% with RBF kernel but struggled with large-scale dataset (2.8M flows) due to quadratic training complexity">
-            <span class="mc-model">SVM (RBF)</span>
-            <span class="mc-val" data-target="88" id="val-svm">88.4%</span>
-            <span class="mc-sub">Accuracy</span>
-          </div>
+      <div class="box grow">
+        <div class="bh">Research Contributions</div>
+        <div class="bb">
+          <ul>
+            <li><strong>Novel SIF Framework:</strong> First integration of LSTM-based IDS with serverless AWS Lambda deployment enforcing NIST SP 800-207 ZTA in a unified, production-viable architecture</li>
+            <li><strong>State-of-the-Art Accuracy:</strong> 98% across all metrics, surpassing federated IDS (97%), hybrid CNN-LSTM (95%), and all classical baselines</li>
+            <li><strong>Scalable &amp; Zero-Cost Idle:</strong> Lambda scales to zero — eliminates persistent attack surfaces; cost-per-invocation model superior to always-on EC2</li>
+            <li><strong>Temporal Feature Exploitation:</strong> LSTM memory gates capture flow evolution patterns inaccessible to CNN convolutions or SVM kernels</li>
+            <li><strong>Sub-100ms Latency:</strong> 15 ms warm execution; 1.1 s cold-start via TorchScript + provisioned concurrency</li>
+            <li><strong>ZTA with Minimal Overhead:</strong> mTLS + IAM adds ~8 ms (5%) while providing per-flow continuous verification</li>
+            <li><strong>Open Reproducibility:</strong> Full code, trained model (.pth), Docker config, Lambda scripts on GitHub</li>
+          </ul>
         </div>
       </div>
 
-      <!-- Bar Chart -->
-      <div class="panel" style="--i:1">
-        <div class="panel-title"><div class="icon">&#128200;</div>Model Accuracy Comparison (Chart.js)</div>
-        <div class="chart-container">
-          <canvas id="modelChart"></canvas>
+      <div class="box">
+        <div class="bh">Zero-Trust Architecture</div>
+        <div class="bb">
+          <ul>
+            <li>&#9658; <strong>Identity:</strong> mTLS via AWS Cognito on every flow</li>
+            <li>&#9658; <strong>Classify:</strong> LSTM inference · confidence &gt;0.85</li>
+            <li>&#9658; <strong>Policy:</strong> IAM least-privilege condition evaluation</li>
+            <li>&#9658; <strong>Enforce:</strong> ALLOW (BENIGN) / BLOCK + SNS alert</li>
+            <li>&#9658; <strong>Re-verify:</strong> Every 5 min or 500 flows</li>
+          </ul>
+          <div class="hl">~8 ms overhead per decision (5% of total execution time)</div>
         </div>
       </div>
 
-      <!-- Confusion Matrix -->
-      <div class="panel" style="--i:2">
-        <div class="panel-title"><div class="icon">&#9632;</div>LSTM Confusion Matrix</div>
-        <div class="cm-wrap" data-tooltip="Click to open full resolution — Near-perfect classification across all 5 traffic classes">
-          <img src="assets/images/confusion-matrix.png"
-               alt="LSTM Confusion Matrix showing near-perfect classification across all 5 traffic classes"
-               onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-          <div style="display:none; background:linear-gradient(135deg,#1e3a5f,#274f82); height:140px; align-items:center; justify-content:center; border-radius:8px;">
-            <div style="text-align:center; color:#fff;">
-              <div style="font-size:36px;">&#9632;</div>
-              <div style="font-size:10px; margin-top:5px;">Confusion Matrix</div>
-              <div style="font-size:8px; color:#93c5fd;">5-Class LSTM Classification</div>
-            </div>
-          </div>
-          <div class="cm-caption">LSTM Confusion Matrix — 5 Classes — CICIDS2017 Test Set</div>
+      <div class="box">
+        <div class="bh">Conclusion &amp; Future Work</div>
+        <div class="bb">
+          <p>The SIF framework proves <strong>serverless + LSTM + ZTA are synergistic</strong>: serverless eliminates persistent attack surfaces; LSTM captures temporal threat patterns; ZTA converts ML predictions into auditable security decisions.</p>
+          <p style="margin-top:4px"><strong>Future directions:</strong></p>
+          <ul>
+            <li>Federated learning across multi-tenant environments</li>
+            <li>Adversarial robustness evaluation &amp; hardening</li>
+            <li>Transformer-based traffic classifiers</li>
+            <li>Encrypted TLS traffic analysis</li>
+            <li>XAI (SHAP/LIME) for analyst dashboards</li>
+          </ul>
         </div>
       </div>
 
-      <!-- Statistical Significance -->
-      <div class="panel" style="--i:3">
-        <div class="panel-title"><div class="icon">&#10003;</div>Statistical Validation</div>
-        <div class="sig-banner">
-          <div class="sig-icon">&#128200;</div>
-          <div class="sig-text">
-            <span class="sig-label">p &lt; 0.05 — Statistically Significant</span>
-            <p>Paired t-test confirms LSTM superiority over all baselines. McNemar's test validates classification differences. Cohen's d &gt; 0.8 (large effect size) for LSTM vs. SVM.</p>
-          </div>
-        </div>
-        <p style="margin-top:6px;">
-          <strong>Wilcoxon signed-rank test</strong> used for non-parametric validation across
-          10-fold cross-validation runs. Results are reproducible across random seeds
-          (&#963; &lt; 0.3% across seeds 42, 123, 456).
-        </p>
-      </div>
-
-      <!-- Classwise Performance Image -->
-      <div class="panel" style="--i:4">
-        <div class="panel-title"><div class="icon">&#9632;</div>Class-wise Performance Chart</div>
-        <div class="cm-wrap" data-tooltip="Per-class precision, recall, and F1 breakdown for the LSTM model">
-          <img src="assets/images/classwise-performance.png"
-               alt="Class-wise performance breakdown"
-               onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-          <div style="display:none; background:linear-gradient(135deg,#14532d,#16a34a); height:100px; align-items:center; justify-content:center; border-radius:8px;">
-            <div style="text-align:center; color:#fff;">
-              <div style="font-size:24px;">&#128202;</div>
-              <div style="font-size:9px; margin-top:4px;">Class-wise Performance</div>
-            </div>
-          </div>
-          <div class="cm-caption">Per-class Precision / Recall / F1 — LSTM Model</div>
+      <div class="box">
+        <div class="bh">SOTA Comparison</div>
+        <div class="bb">
+          <table class="tbl">
+            <thead><tr><th>Reference</th><th>Model</th><th>Accuracy</th></tr></thead>
+            <tbody>
+              <tr class="best"><td><strong>Proposed (2025)</strong></td><td><strong>3-Layer LSTM</strong></td><td><strong>98.0%</strong></td></tr>
+              <tr><td>Neto et al. 2022</td><td>Federated IDS</td><td>97.0%</td></tr>
+              <tr><td>Bamber et al. 2025</td><td>CNN-LSTM</td><td>95.0%</td></tr>
+              <tr><td>Altunay et al. 2023</td><td>CNN+LSTM</td><td>93.2%</td></tr>
+            </tbody>
+          </table>
         </div>
       </div>
 
-    </div><!-- /col 3 -->
-
-    <!-- ══════════════════════════════════════════
-         COLUMN 4: ANALYSIS
-    ══════════════════════════════════════════ -->
-    <div class="col">
-
-      <!-- Class-wise Table -->
-      <div class="panel" style="--i:0">
-        <div class="panel-title"><div class="icon">&#128202;</div>Class-Wise LSTM Performance</div>
-        <table class="cw-table">
-          <thead>
-            <tr>
-              <th>Traffic Class</th>
-              <th>Prec.</th>
-              <th>Recall</th>
-              <th>F1</th>
-              <th>Support</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>BENIGN</td>
-              <td class="perfect">0.99</td>
-              <td class="perfect">0.99</td>
-              <td class="perfect">0.99</td>
-              <td>422,000+</td>
-            </tr>
-            <tr>
-              <td>DoS Hulk</td>
-              <td class="perfect">0.98</td>
-              <td class="perfect">0.98</td>
-              <td class="perfect">0.98</td>
-              <td>188,000+</td>
-            </tr>
-            <tr>
-              <td>PortScan</td>
-              <td class="perfect">0.99</td>
-              <td class="perfect">0.98</td>
-              <td class="perfect">0.98</td>
-              <td>127,000+</td>
-            </tr>
-            <tr>
-              <td>DDoS</td>
-              <td class="high">0.97</td>
-              <td class="high">0.97</td>
-              <td class="high">0.97</td>
-              <td>41,000+</td>
-            </tr>
-            <tr>
-              <td>FTP-BruteForce</td>
-              <td class="high">0.96</td>
-              <td class="high">0.97</td>
-              <td class="high">0.96</td>
-              <td>7,900+</td>
-            </tr>
-            <tr style="border-top:2px solid var(--primary);">
-              <td><strong>Weighted Avg.</strong></td>
-              <td class="perfect"><strong>0.98</strong></td>
-              <td class="perfect"><strong>0.98</strong></td>
-              <td class="perfect"><strong>0.98</strong></td>
-              <td><strong>786,900+</strong></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <!-- Training Curves -->
-      <div class="panel" style="--i:1">
-        <div class="panel-title"><div class="icon">&#128200;</div>Training Curves</div>
-        <div class="img-grid">
-          <div class="img-frame" data-tooltip="Training and validation accuracy converging to 98% — stable learning without overfitting">
-            <div class="img-cap">Accuracy</div>
-            <img src="assets/images/accuracy.png"
-                 alt="Training vs Validation Accuracy over 50 epochs"
-                 onerror="this.style.background='linear-gradient(135deg,#1e3a5f,#0ea5e9)'; this.style.height='90px'; this.style.display='block'; this.style.lineHeight='90px'; this.style.textAlign='center'; this.style.color='#fff'; this.style.fontSize='9px'; this.alt=''; this.style.content='Accuracy';">
-          </div>
-          <div class="img-frame" data-tooltip="Training and validation loss decreasing steadily — no divergence detected across 50 epochs">
-            <div class="img-cap">Loss</div>
-            <img src="assets/images/loss.png"
-                 alt="Training vs Validation Loss over 50 epochs"
-                 onerror="this.style.background='linear-gradient(135deg,#78350f,#f59e0b)'; this.style.height='90px'; this.style.display='block';">
-          </div>
-        </div>
-        <p style="margin-top:5px; font-size:8.5px; color:var(--text-light); text-align:center;">
-          Smooth convergence across 50 epochs — no overfitting detected (val loss tracking train loss)
-        </p>
-      </div>
-
-      <!-- SOTA Comparison -->
-      <div class="panel" style="--i:2">
-        <div class="panel-title"><div class="icon">&#9733;</div>State-of-the-Art Comparison</div>
-        <table class="sota-table">
-          <thead>
-            <tr>
-              <th>Method / Study</th>
-              <th>Dataset</th>
-              <th>Acc.</th>
-              <th>F1</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr><td>KDDCUP99-LSTM [1]</td><td>KDD-99</td><td>96.1%</td><td>0.95</td></tr>
-            <tr><td>CNN-LSTM Hybrid [2]</td><td>NSL-KDD</td><td>97.2%</td><td>0.96</td></tr>
-            <tr><td>Attention-BiLSTM [3]</td><td>CICIDS17</td><td>97.5%</td><td>0.97</td></tr>
-            <tr><td>Random Forest IDS [4]</td><td>CICIDS17</td><td>95.8%</td><td>0.95</td></tr>
-            <tr><td>Transformer-IDS [5]</td><td>CICIDS17</td><td>97.8%</td><td>0.97</td></tr>
-            <tr class="winner">
-              <td><strong>SIF-LSTM (Ours)</strong> <span class="sota-badge">BEST</span></td>
-              <td>CICIDS17</td>
-              <td><strong>98.0%</strong></td>
-              <td><strong>0.98</strong></td>
-            </tr>
-          </tbody>
-        </table>
-        <p style="margin-top:5px; font-size:8px; color:var(--text-light);">
-          * All comparisons on identical CICIDS2017 5-class split where applicable. Our model achieves best-in-class across all four metrics simultaneously.
-        </p>
-      </div>
-
-      <!-- Deployment Details -->
-      <div class="panel" style="--i:3">
-        <div class="panel-title"><div class="icon">&#9729;</div>Serverless Deployment Details</div>
-        <div class="deploy-grid">
-          <div class="deploy-card" data-tooltip="AWS Lambda: managed serverless compute with auto-scaling, pay-per-invocation pricing">
-            <span class="dc-icon">&#9729;</span>
-            <span class="dc-label">AWS Lambda</span>
-            <span class="dc-val">Serverless Compute</span>
-          </div>
-          <div class="deploy-card" data-tooltip="Docker container image: TensorFlow 2.x + model weights, &lt;512MB, ECR hosted">
-            <span class="dc-icon">&#128668;</span>
-            <span class="dc-label">Docker</span>
-            <span class="dc-val">Container Runtime</span>
-          </div>
-          <div class="deploy-card" data-tooltip="API Gateway: REST endpoint triggering Lambda, HTTPS, with throttling and WAF rules">
-            <span class="dc-icon">&#128246;</span>
-            <span class="dc-label">API Gateway</span>
-            <span class="dc-val">HTTP Trigger</span>
-          </div>
-          <div class="deploy-card" data-tooltip="AWS Security Hub: aggregates findings, triggers automated remediation via Lambda">
-            <span class="dc-icon">&#128274;</span>
-            <span class="dc-label">Security Hub</span>
-            <span class="dc-val">ZTA Enforcement</span>
-          </div>
-          <div class="deploy-card" data-tooltip="AWS WAF: Web Application Firewall rules updated dynamically from ML classifier outputs">
-            <span class="dc-icon">&#128737;</span>
-            <span class="dc-label">AWS WAF</span>
-            <span class="dc-val">Dynamic Rules</span>
-          </div>
-          <div class="deploy-card" data-tooltip="CloudWatch: metrics, logs, and alarms for classifier drift detection and latency monitoring">
-            <span class="dc-icon">&#128250;</span>
-            <span class="dc-label">CloudWatch</span>
-            <span class="dc-val">Observability</span>
-          </div>
-        </div>
-
-        <!-- Architecture image -->
-        <div class="img-frame" style="margin-top:8px;" data-tooltip="Full system architecture — SIF pipeline on AWS">
-          <div class="img-cap">System Architecture Diagram</div>
-          <img src="assets/images/architecture-diagram.png"
-               alt="Serverless Intelligent Firewall Architecture on AWS"
-               onerror="this.style.background='linear-gradient(135deg,#0f1f3d,#1e3a5f)'; this.style.height='80px'; this.style.display='block';">
+      <div class="box">
+        <div class="bh">References</div>
+        <div class="bb" style="font-size:clamp(5px,.62vw,8.5px)">
+          <ul style="padding-left:11px">
+            <li>Sharafaldin et al. (2018). CICIDS2017. <em>ICISSP</em></li>
+            <li>Rose et al. (2020). NIST SP 800-207 Zero Trust Architecture</li>
+            <li>Hochreiter &amp; Schmidhuber (1997). LSTM. <em>Neural Computation</em></li>
+            <li>Altunay &amp; Albayrak (2023). CNN+LSTM. <em>ESTIJ</em></li>
+            <li>Bamber et al. (2025). CNN-LSTM IDS. <em>arXiv</em></li>
+            <li>Kingma &amp; Ba (2015). Adam Optimizer. <em>ICLR</em></li>
+            <li>AWS (2024). Lambda Developer Guide</li>
+          </ul>
         </div>
       </div>
 
-      <!-- Metrics Summary Inline -->
-      <div class="panel" style="--i:4">
-        <div class="panel-title"><div class="icon">&#10003;</div>All-Metric Parity — LSTM</div>
-        <p>Unlike single-metric optimization, our LSTM achieves <strong>98% simultaneously across</strong>:</p>
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:4px; margin-top:6px;">
-          <div style="background:#f0fdf4; border:1.5px solid var(--success); border-radius:6px; padding:6px; text-align:center;">
-            <div style="font-size:18px; font-weight:700; color:var(--success); font-family:'Crimson Text',serif;">98%</div>
-            <div style="font-size:8px; color:#166534; font-weight:700;">ACCURACY</div>
-          </div>
-          <div style="background:#f0fdf4; border:1.5px solid var(--success); border-radius:6px; padding:6px; text-align:center;">
-            <div style="font-size:18px; font-weight:700; color:var(--success); font-family:'Crimson Text',serif;">98%</div>
-            <div style="font-size:8px; color:#166534; font-weight:700;">PRECISION</div>
-          </div>
-          <div style="background:#f0fdf4; border:1.5px solid var(--success); border-radius:6px; padding:6px; text-align:center;">
-            <div style="font-size:18px; font-weight:700; color:var(--success); font-family:'Crimson Text',serif;">98%</div>
-            <div style="font-size:8px; color:#166534; font-weight:700;">RECALL</div>
-          </div>
-          <div style="background:#f0fdf4; border:1.5px solid var(--success); border-radius:6px; padding:6px; text-align:center;">
-            <div style="font-size:18px; font-weight:700; color:var(--success); font-family:'Crimson Text',serif;">98%</div>
-            <div style="font-size:8px; color:#166534; font-weight:700;">F1-SCORE</div>
-          </div>
-        </div>
-        <p style="margin-top:6px; font-size:8.5px; color:var(--text-light);">
-          This four-way parity indicates the model is not trading recall for precision
-          (common in imbalanced datasets), validating the SMOTE preprocessing strategy.
-        </p>
-      </div>
+    </div><!-- /RIGHT -->
 
-    </div><!-- /col 4 -->
+  </div><!-- /body -->
 
-  </main><!-- /poster-body -->
-
-  <!-- ──────────────────── FOOTER ──────────────────── -->
-  <footer class="poster-footer">
-
-    <!-- Conclusion -->
-    <div>
-      <span class="footer-section-title">Conclusion</span>
-      <p class="footer-text">
-        We present the <strong style="color:#fff;">Serverless Intelligent Firewall (SIF)</strong>, a production-ready
-        AI-driven network security system achieving <strong style="color:var(--success-light);">98% accuracy across all metrics</strong>
-        on the CICIDS2017 benchmark. By deploying a 3-layer LSTM classifier on AWS Lambda with Docker containerization,
-        we demonstrate that deep learning IDS can operate at serverless scale with sub-100 ms latency.
-        Zero-Trust Architecture principles are enforced at the flow level, eliminating the assumption of a trusted perimeter.
-        Statistically validated (p &lt; 0.05), our system outperforms CNN, SVM, and Decision Tree baselines
-        while maintaining production scalability.
-      </p>
+  <!-- ── FOOTER ── -->
+  <div class="ftr">
+    <span>&#169; 2025 Md Anisur Rahman Chowdhury et al. &nbsp;|&nbsp; Gannon University, Erie, PA 16541 &nbsp;|&nbsp; Published in IEEE 2025</span>
+    <div class="ftr-links">
+      <span>&#128279; github.com/ANIS151993/Serverless-Intelligent-Firewall-Research-1</span>
+      <span>&#9654; youtu.be/K04bOFbv204</span>
+      <span>&#9993; engr.aanis@gmail.com</span>
     </div>
-
-    <!-- Future Work -->
-    <div>
-      <span class="footer-section-title">Future Work</span>
-      <div class="tag-list">
-        <span class="tag">Real-time streaming (Kinesis)</span>
-        <span class="tag">Federated Learning</span>
-        <span class="tag">Edge deployment (Lambda@Edge)</span>
-        <span class="tag">LLM-powered alert explanations</span>
-        <span class="tag">Adversarial robustness testing</span>
-        <span class="tag">Multi-cloud ZTA framework</span>
-        <span class="tag">Encrypted traffic classification</span>
-        <span class="tag">GAN-based augmentation</span>
-        <span class="tag">CICIDS2023 extension</span>
-      </div>
-    </div>
-
-    <!-- References -->
-    <div class="footer-refs">
-      <span class="footer-section-title">References</span>
-      <div class="ref-item" data-n="1">Sharafaldin et al., "Toward Generating a New IDS Dataset," ICISSP 2018.</div>
-      <div class="ref-item" data-n="2">Hochreiter &amp; Schmidhuber, "Long Short-Term Memory," Neural Comput. 1997.</div>
-      <div class="ref-item" data-n="3">Rose et al., "Zero Trust Architecture," NIST SP 800-207, 2020.</div>
-      <div class="ref-item" data-n="4">Kim et al., "CNN-LSTM for Network Intrusion Detection," IEEE Access 2020.</div>
-      <div class="ref-item" data-n="5">Chowdhury et al., "SIF: Serverless Intelligent Firewall," IEEE 2025.</div>
-    </div>
-
-    <!-- Contact -->
-    <div class="footer-contact">
-      <span class="footer-section-title">Contact</span>
-      <div class="contact-item">
-        <span class="ci-icon">&#128231;</span>
-        <span class="ci-text">chowdhury015@gannon.edu</span>
-      </div>
-      <div class="contact-item">
-        <span class="ci-icon">&#127979;</span>
-        <span class="ci-text">Gannon University, Erie, PA, USA</span>
-      </div>
-      <div class="contact-item">
-        <span class="ci-icon">&#127968;</span>
-        <span class="ci-text">College of Engineering &amp; Business</span>
-      </div>
-      <div class="contact-item" style="margin-top:6px;">
-        <span class="ci-icon">&#9733;</span>
-        <span class="ci-text" style="color:var(--warn-light); font-size:8px;">* Corresponding: Md Anisur Rahman Chowdhury</span>
-      </div>
-      <div style="margin-top:6px; background:rgba(255,255,255,.08); border-radius:6px; padding:5px 8px;">
-        <div style="font-size:7.5px; color:rgba(255,255,255,.6); margin-bottom:3px; text-transform:uppercase; letter-spacing:.5px;">Acknowledgement</div>
-        <div style="font-size:8px; color:rgba(255,255,255,.75);">Supported by Gannon University Department of Computer Science &amp; Engineering and University of the Potomac. Dataset: CICIDS2017 (Canadian Institute for Cybersecurity).</div>
-      </div>
-    </div>
-
-    <!-- QR Codes -->
-    <div class="footer-qr-col">
-      <span class="footer-section-title" style="text-align:center; width:100%;">Scan / Visit</span>
-      <a class="footer-qr-box" href="https://github.com/ANIS151993/Serverless-Intelligent-Firewall-Research-1" target="_blank">
-        <!-- QR-pattern placeholder SVG -->
-        <svg class="qr-pattern" viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
-          <rect width="50" height="50" fill="white"/>
-          <!-- TL finder -->
-          <rect x="2" y="2" width="16" height="16" rx="2" fill="#1e3a5f"/>
-          <rect x="5" y="5" width="10" height="10" rx="1" fill="white"/>
-          <rect x="7" y="7" width="6" height="6" rx="1" fill="#1e3a5f"/>
-          <!-- TR finder -->
-          <rect x="32" y="2" width="16" height="16" rx="2" fill="#1e3a5f"/>
-          <rect x="35" y="5" width="10" height="10" rx="1" fill="white"/>
-          <rect x="37" y="7" width="6" height="6" rx="1" fill="#1e3a5f"/>
-          <!-- BL finder -->
-          <rect x="2" y="32" width="16" height="16" rx="2" fill="#1e3a5f"/>
-          <rect x="5" y="35" width="10" height="10" rx="1" fill="white"/>
-          <rect x="7" y="37" width="6" height="6" rx="1" fill="#1e3a5f"/>
-          <!-- Data modules (simplified pattern) -->
-          <rect x="21" y="2" width="3" height="3" fill="#1e3a5f"/>
-          <rect x="26" y="2" width="3" height="3" fill="#1e3a5f"/>
-          <rect x="21" y="7" width="3" height="3" fill="#1e3a5f"/>
-          <rect x="21" y="12" width="3" height="3" fill="#1e3a5f"/>
-          <rect x="26" y="9" width="3" height="3" fill="#1e3a5f"/>
-          <rect x="2" y="21" width="3" height="3" fill="#1e3a5f"/>
-          <rect x="7" y="21" width="3" height="3" fill="#1e3a5f"/>
-          <rect x="12" y="21" width="3" height="3" fill="#1e3a5f"/>
-          <rect x="2" y="26" width="3" height="3" fill="#1e3a5f"/>
-          <rect x="9" y="26" width="3" height="3" fill="#1e3a5f"/>
-          <rect x="21" y="21" width="3" height="3" fill="#1e3a5f"/>
-          <rect x="26" y="21" width="3" height="3" fill="#1e3a5f"/>
-          <rect x="21" y="26" width="3" height="3" fill="#1e3a5f"/>
-          <rect x="28" y="26" width="3" height="3" fill="#1e3a5f"/>
-          <rect x="33" y="21" width="3" height="3" fill="#1e3a5f"/>
-          <rect x="38" y="21" width="3" height="3" fill="#1e3a5f"/>
-          <rect x="43" y="21" width="3" height="3" fill="#1e3a5f"/>
-          <rect x="33" y="26" width="3" height="3" fill="#1e3a5f"/>
-          <rect x="40" y="26" width="3" height="3" fill="#1e3a5f"/>
-          <rect x="21" y="33" width="3" height="3" fill="#1e3a5f"/>
-          <rect x="26" y="33" width="3" height="3" fill="#1e3a5f"/>
-          <rect x="21" y="38" width="3" height="3" fill="#1e3a5f"/>
-          <rect x="21" y="43" width="3" height="3" fill="#1e3a5f"/>
-          <rect x="28" y="38" width="3" height="3" fill="#1e3a5f"/>
-          <rect x="33" y="33" width="3" height="3" fill="#1e3a5f"/>
-          <rect x="38" y="33" width="3" height="3" fill="#1e3a5f"/>
-          <rect x="43" y="33" width="3" height="3" fill="#1e3a5f"/>
-          <rect x="33" y="40" width="3" height="3" fill="#1e3a5f"/>
-          <rect x="38" y="38" width="3" height="3" fill="#1e3a5f"/>
-          <rect x="43" y="43" width="3" height="3" fill="#1e3a5f"/>
-          <rect x="40" y="43" width="3" height="3" fill="#0ea5e9"/>
-        </svg>
-        <span class="fqr-label">GitHub Repo</span>
-        <span class="fqr-url">github.com/ANIS151993/SIF-Research-1</span>
-      </a>
-      <a class="footer-qr-box" href="https://youtu.be/K04bOFbv204" target="_blank">
-        <svg class="qr-pattern" viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
-          <rect width="50" height="50" fill="white"/>
-          <!-- TL finder -->
-          <rect x="2" y="2" width="16" height="16" rx="2" fill="#dc2626"/>
-          <rect x="5" y="5" width="10" height="10" rx="1" fill="white"/>
-          <rect x="7" y="7" width="6" height="6" rx="1" fill="#dc2626"/>
-          <!-- TR finder -->
-          <rect x="32" y="2" width="16" height="16" rx="2" fill="#dc2626"/>
-          <rect x="35" y="5" width="10" height="10" rx="1" fill="white"/>
-          <rect x="37" y="7" width="6" height="6" rx="1" fill="#dc2626"/>
-          <!-- BL finder -->
-          <rect x="2" y="32" width="16" height="16" rx="2" fill="#dc2626"/>
-          <rect x="5" y="35" width="10" height="10" rx="1" fill="white"/>
-          <rect x="7" y="37" width="6" height="6" rx="1" fill="#dc2626"/>
-          <!-- Data modules -->
-          <rect x="21" y="2" width="3" height="3" fill="#dc2626"/>
-          <rect x="26" y="4" width="3" height="3" fill="#dc2626"/>
-          <rect x="21" y="9" width="3" height="3" fill="#dc2626"/>
-          <rect x="26" y="12" width="3" height="3" fill="#dc2626"/>
-          <rect x="2" y="21" width="3" height="3" fill="#dc2626"/>
-          <rect x="9" y="21" width="3" height="3" fill="#dc2626"/>
-          <rect x="14" y="21" width="3" height="3" fill="#dc2626"/>
-          <rect x="5" y="26" width="3" height="3" fill="#dc2626"/>
-          <rect x="12" y="27" width="3" height="3" fill="#dc2626"/>
-          <rect x="21" y="21" width="3" height="3" fill="#dc2626"/>
-          <rect x="27" y="23" width="3" height="3" fill="#dc2626"/>
-          <rect x="21" y="28" width="3" height="3" fill="#dc2626"/>
-          <rect x="35" y="21" width="3" height="3" fill="#dc2626"/>
-          <rect x="41" y="22" width="3" height="3" fill="#dc2626"/>
-          <rect x="35" y="27" width="3" height="3" fill="#dc2626"/>
-          <rect x="43" y="26" width="3" height="3" fill="#dc2626"/>
-          <rect x="21" y="33" width="3" height="3" fill="#dc2626"/>
-          <rect x="28" y="35" width="3" height="3" fill="#dc2626"/>
-          <rect x="22" y="41" width="3" height="3" fill="#dc2626"/>
-          <rect x="27" y="43" width="3" height="3" fill="#dc2626"/>
-          <rect x="35" y="35" width="3" height="3" fill="#dc2626"/>
-          <rect x="42" y="33" width="3" height="3" fill="#dc2626"/>
-          <rect x="36" y="41" width="3" height="3" fill="#dc2626"/>
-          <rect x="43" y="43" width="3" height="3" fill="#dc2626"/>
-          <!-- YouTube play triangle hint -->
-          <polygon points="23,44 23,48 27,46" fill="#dc2626"/>
-        </svg>
-        <span class="fqr-label">YouTube Demo</span>
-        <span class="fqr-url">youtu.be/K04bOFbv204</span>
-      </a>
-    </div>
-
-  </footer>
+  </div>
 
 </div><!-- /poster -->
 
-<!-- ════════════════════════════════════════════════════════════════
-     JAVASCRIPT
-════════════════════════════════════════════════════════════════ -->
 <script>
-/* ── Animated Counter ── */
-function animateCounter(el, target, suffix, duration) {
-  const start = performance.now();
-  const startVal = 0;
-  function update(now) {
-    const elapsed = now - start;
-    const progress = Math.min(elapsed / duration, 1);
-    const ease = 1 - Math.pow(1 - progress, 3); // easeOutCubic
-    const current = Math.round(startVal + (target - startVal) * ease);
-    el.textContent = current + suffix;
-    if (progress < 1) requestAnimationFrame(update);
-  }
-  requestAnimationFrame(update);
-}
-
-/* Run counters on load */
-window.addEventListener('DOMContentLoaded', () => {
-  setTimeout(() => {
-    animateCounter(document.getElementById('val-lstm'), 98, '%', 1200);
-  }, 300);
-  setTimeout(() => {
-    animateCounter(document.getElementById('val-cnn'), 93, '%', 1200);
-  }, 500);
-  setTimeout(() => {
-    // DT is 90.2 — we animate integer part then set decimal
-    const el = document.getElementById('val-dt');
-    const start = performance.now();
-    function update(now) {
-      const elapsed = now - start;
-      const progress = Math.min(elapsed / 1200, 1);
-      const ease = 1 - Math.pow(1 - progress, 3);
-      const current = (ease * 90.2).toFixed(1);
-      el.textContent = current + '%';
-      if (progress < 1) requestAnimationFrame(update);
-    }
-    requestAnimationFrame(update);
-  }, 700);
-  setTimeout(() => {
-    const el = document.getElementById('val-svm');
-    const start = performance.now();
-    function update(now) {
-      const elapsed = now - start;
-      const progress = Math.min(elapsed / 1200, 1);
-      const ease = 1 - Math.pow(1 - progress, 3);
-      const current = (ease * 88.4).toFixed(1);
-      el.textContent = current + '%';
-      if (progress < 1) requestAnimationFrame(update);
-    }
-    requestAnimationFrame(update);
-  }, 900);
-});
-
-/* ── Chart.js Bar Chart ── */
-window.addEventListener('load', () => {
-  const ctx = document.getElementById('modelChart');
-  if (!ctx) return;
-
-  const labels = ['LSTM\n(Ours)', 'CNN', 'Decision\nTree', 'SVM\n(RBF)'];
-  const accuracyData = [98, 93, 90.2, 88.4];
-  const precisionData = [98, 92.5, 89.8, 87.9];
-  const recallData    = [98, 92.8, 90.0, 88.0];
-  const f1Data        = [98, 92.6, 89.9, 87.8];
-
-  new Chart(ctx, {
-    type: 'bar',
-    data: {
-      labels: ['LSTM (Ours)', 'CNN', 'Decision Tree', 'SVM (RBF)'],
-      datasets: [
-        {
-          label: 'Accuracy (%)',
-          data: accuracyData,
-          backgroundColor: [
-            'rgba(22,163,74,0.85)',
-            'rgba(14,165,233,0.85)',
-            'rgba(217,119,6,0.85)',
-            'rgba(220,38,38,0.85)'
-          ],
-          borderColor: [
-            'rgba(22,163,74,1)',
-            'rgba(14,165,233,1)',
-            'rgba(217,119,6,1)',
-            'rgba(220,38,38,1)'
-          ],
-          borderWidth: 1.5,
-          borderRadius: 4,
-          order: 1
-        },
-        {
-          label: 'Precision (%)',
-          data: precisionData,
-          backgroundColor: [
-            'rgba(22,163,74,0.4)',
-            'rgba(14,165,233,0.4)',
-            'rgba(217,119,6,0.4)',
-            'rgba(220,38,38,0.4)'
-          ],
-          borderColor: [
-            'rgba(22,163,74,0.7)',
-            'rgba(14,165,233,0.7)',
-            'rgba(217,119,6,0.7)',
-            'rgba(220,38,38,0.7)'
-          ],
-          borderWidth: 1,
-          borderRadius: 4,
-          order: 2
-        },
-        {
-          label: 'F1-Score (%)',
-          data: f1Data,
-          backgroundColor: 'rgba(139,92,246,0.5)',
-          borderColor: 'rgba(139,92,246,0.9)',
-          borderWidth: 1.5,
-          borderRadius: 4,
-          type: 'line',
-          fill: false,
-          pointRadius: 4,
-          pointHoverRadius: 6,
-          tension: 0.3,
-          order: 0
-        }
-      ]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      animation: {
-        duration: 1500,
-        easing: 'easeOutQuart',
-        delay: (context) => context.dataIndex * 150
-      },
-      interaction: {
-        mode: 'index',
-        intersect: false
-      },
-      plugins: {
-        legend: {
-          display: true,
-          position: 'top',
-          labels: {
-            font: { family: 'Source Sans 3', size: 9 },
-            padding: 8,
-            boxWidth: 12,
-            boxHeight: 8
-          }
-        },
-        tooltip: {
-          backgroundColor: 'rgba(15,31,61,0.92)',
-          titleFont: { family: 'Source Sans 3', size: 10, weight: 'bold' },
-          bodyFont: { family: 'Source Sans 3', size: 9 },
-          padding: 8,
-          cornerRadius: 6,
-          callbacks: {
-            label: (ctx) => ` ${ctx.dataset.label}: ${ctx.parsed.y}%`
-          }
-        }
-      },
-      scales: {
-        x: {
-          grid: { display: false },
-          ticks: {
-            font: { family: 'Source Sans 3', size: 9, weight: '600' },
-            color: '#334155'
-          }
-        },
-        y: {
-          min: 80,
-          max: 100,
-          grid: {
-            color: 'rgba(148,163,184,0.2)',
-            lineWidth: 1
-          },
-          ticks: {
-            font: { family: 'Source Sans 3', size: 9 },
-            color: '#64748b',
-            callback: (val) => val + '%'
-          }
-        }
-      }
-    }
-  });
-});
-
-/* ── Hover zoom on images ── */
-document.querySelectorAll('.img-frame img, .cm-wrap img').forEach(img => {
-  img.addEventListener('click', () => {
-    const src = img.src;
-    if (!src) return;
-    const overlay = document.createElement('div');
-    overlay.style.cssText = `
-      position:fixed; top:0; left:0; width:100vw; height:100vh;
-      background:rgba(0,0,0,0.85); z-index:99999;
-      display:flex; align-items:center; justify-content:center;
-      cursor:zoom-out;
-    `;
-    const bigImg = document.createElement('img');
-    bigImg.src = src;
-    bigImg.style.cssText = `
-      max-width:90vw; max-height:90vh;
-      border-radius:8px;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.8);
-      animation: fadeInUp .3s ease-out;
-    `;
-    overlay.appendChild(bigImg);
-    overlay.addEventListener('click', () => overlay.remove());
-    document.body.appendChild(overlay);
-  });
-});
-
-/* ── Intersection Observer for panel fade-in ── */
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(e => {
-    if (e.isIntersecting) {
-      e.target.style.opacity = '1';
-      e.target.style.transform = 'translateY(0)';
-    }
-  });
-}, { threshold: 0.1 });
-
-document.querySelectorAll('.panel').forEach(panel => {
-  observer.observe(panel);
-});
+const H="5b484d8b2799daf74779ce686501847d4a08b5e917c1e8395e1da7f7e73bce0d";
+async function sha256(m){const b=new TextEncoder().encode(m);const h=await crypto.subtle.digest('SHA-256',b);return Array.from(new Uint8Array(h)).map(x=>x.toString(16).padStart(2,'0')).join('');}
+function openGate(){document.getElementById('dl-overlay').classList.remove('dl-hidden');document.body.style.overflow='hidden';dlGo(1);}
+function closeGate(){document.getElementById('dl-overlay').classList.add('dl-hidden');document.body.style.overflow='';dlGo(1);const e=document.getElementById('dl-err');if(e)e.classList.add('dl-hidden');const i=document.getElementById('dl-pw-inp');if(i){i.value='';i.classList.remove('shake');}}
+function dlGo(n){['dl-s1','dl-s2','dl-s3','dl-s-ok'].forEach(id=>{const el=document.getElementById(id);if(el)el.classList.add('dl-hidden');});const t=document.getElementById(n==='ok'?'dl-s-ok':'dl-s'+n);if(t)t.classList.remove('dl-hidden');[1,2,3].forEach(i=>{const d=document.getElementById('dd'+i);if(d)d.classList.toggle('on',i===n);});}
+async function dlCheck(){const i=document.getElementById('dl-pw-inp');const e=document.getElementById('dl-err');const h=await sha256(i.value.trim());if(h===H){e.classList.add('dl-hidden');dlGo('ok');setTimeout(()=>{const l=document.getElementById('dl-lnk');if(l)l.click();},600);}else{e.classList.remove('dl-hidden');i.classList.remove('shake');void i.offsetWidth;i.classList.add('shake');i.focus();}}
+document.addEventListener('click',e=>{if(e.target===document.getElementById('dl-overlay'))closeGate();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeGate();});
 </script>
-
 </body>
 </html>
