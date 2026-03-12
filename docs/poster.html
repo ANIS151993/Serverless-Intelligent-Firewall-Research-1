@@ -206,8 +206,47 @@ html,body{width:100%;min-height:100vh;background:#c8c0b8;font-family:var(--font)
   border-radius:4px;padding:3px 5px;text-align:center;flex:1;
   font-size:clamp(5px,.6vw,8px);font-weight:600;color:var(--crimson-dark);
 }
-.ps i{font-size:clamp(10px,1.1vw,15px);display:block;margin-bottom:1px;font-style:normal}
+.ps-icon{
+  display:block;width:clamp(11px,1.15vw,16px);height:clamp(11px,1.15vw,16px);
+  margin:0 auto 2px;color:currentColor;
+}
+.ps-icon svg{
+  display:block;width:100%;height:100%;fill:none;stroke:currentColor;stroke-width:1.8;
+  stroke-linecap:round;stroke-linejoin:round;
+}
 .pa{color:var(--crimson);font-size:clamp(9px,1vw,14px);font-weight:700;flex-shrink:0}
+
+/* ── METHODOLOGY BOX TUNING ─────────────────────────── */
+.methodology-box,.results-box{flex:1}
+.methodology-box .bb{padding:5px 8px 6px}
+.methodology-box .pipeline{gap:2px;margin:1px 0 4px}
+.methodology-box .ps{padding:1.5px 3px;font-size:clamp(4.55px,.54vw,7px)}
+.methodology-box .pa{font-size:clamp(7px,.82vw,11px)}
+.methodology-box .fig{margin:3px 0}
+.methodology-box .fig-cap{font-size:clamp(4.6px,.54vw,6.9px)}
+.methodology-box .tbl{font-size:clamp(4.9px,.58vw,7.8px);margin:2px 0}
+.methodology-box .tbl th,.methodology-box .tbl td{padding:1.2px 3.5px}
+.methodology-box .method-arch img{max-height:185px;width:auto;max-width:100%}
+.methodology-box .method-mini img{max-height:54px;width:auto;max-width:100%}
+.methodology-box .method-mini-row{gap:3px;margin:1px 0 0}
+.methodology-box .method-params{margin:2px 0 1px}
+.results-box .bb{padding:5px 8px 6px}
+.results-box .stats{gap:4px;margin:4px 0}
+.results-box .stat{padding:3px 2px}
+.results-box .sv{font-size:clamp(9px,1vw,14px)}
+.results-box .sl{font-size:clamp(5px,.6vw,8px)}
+.results-box #prog-bars{margin:0 0 2px}
+.results-box .prog-row{gap:3px;margin:0}
+.results-box .prog-label{font-size:clamp(5px,.6vw,8px)}
+.results-box .prog-val{font-size:clamp(5px,.6vw,8px)}
+.results-box .tbl{font-size:clamp(4.95px,.6vw,7.95px);margin:2px 0}
+.results-box .tbl th,.results-box .tbl td{padding:1.4px 4px}
+.results-box .fig{margin:3px 0}
+.results-box .fig-row{gap:4px;margin:2px 0}
+.results-box .fig img{max-height:95px;width:auto;max-width:100%}
+.results-box .fig-cap{font-size:clamp(4.6px,.54vw,6.9px)}
+.results-box .results-class-table{font-size:clamp(4.75px,.58vw,7.6px);margin-top:1px}
+.results-box .results-class-table th,.results-box .results-class-table td{padding:1.2px 3.5px}
 
 /* ── FIGURES ─────────────────────────────────────────── */
 .fig{margin:4px 0;text-align:center}
@@ -544,7 +583,7 @@ html,body{width:100%;min-height:100vh;background:#c8c0b8;font-family:var(--font)
       <div class="box">
         <div class="bh">Dataset — CICIDS2017</div>
         <div class="bb">
-          <table class="tbl">
+          <table class="tbl method-params">
             <tbody>
               <tr><td><strong>Total Records</strong></td><td>2,830,540 flow records</td></tr>
               <tr><td><strong>Features</strong></td><td>78 numerical traffic features</td></tr>
@@ -562,22 +601,72 @@ html,body{width:100%;min-height:100vh;background:#c8c0b8;font-family:var(--font)
     <div class="col">
 
       <!-- CENTER BOX 1: Methodology -->
-      <div class="cbox">
+      <div class="cbox methodology-box">
         <div class="bh">Methodology (An Overview)</div>
         <div class="bb">
           <div class="pipeline">
-            <div class="ps"><i>&#128202;</i>CICIDS2017<div class="ps-tip">2.8M+ flows · 78 features · 5 classes</div></div>
+            <div class="ps">
+              <span class="ps-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <ellipse cx="12" cy="5.5" rx="6.5" ry="2.7"></ellipse>
+                  <path d="M5.5 5.5v9.5c0 1.5 2.9 2.8 6.5 2.8s6.5-1.3 6.5-2.8V5.5"></path>
+                  <path d="M5.5 10.3c0 1.5 2.9 2.8 6.5 2.8s6.5-1.3 6.5-2.8"></path>
+                </svg>
+              </span>
+              CICIDS2017
+              <div class="ps-tip">2.8M+ flows · 78 features · 5 classes</div>
+            </div>
             <span class="pa">&#8594;</span>
-            <div class="ps"><i>&#9881;</i>Preprocess<div class="ps-tip">Clean · Undersample · Normalise</div></div>
+            <div class="ps">
+              <span class="ps-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <path d="M4 6h16M4 12h16M4 18h16"></path>
+                  <circle cx="9" cy="6" r="2"></circle>
+                  <circle cx="15" cy="12" r="2"></circle>
+                  <circle cx="11" cy="18" r="2"></circle>
+                </svg>
+              </span>
+              Preprocess
+              <div class="ps-tip">Clean · Undersample · Normalise</div>
+            </div>
             <span class="pa">&#8594;</span>
-            <div class="ps"><i>&#129504;</i>LSTM Train<div class="ps-tip">128→64→32 units · Dropout 0.3 · Adam</div></div>
+            <div class="ps">
+              <span class="ps-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <circle cx="6" cy="17" r="2"></circle>
+                  <circle cx="12" cy="7" r="2"></circle>
+                  <circle cx="18" cy="17" r="2"></circle>
+                  <path d="M7.5 15.8l3-6.5M13.5 9.3l3 6.5M8 17h8"></path>
+                </svg>
+              </span>
+              LSTM Train
+              <div class="ps-tip">128→64→32 units · Dropout 0.3 · Adam</div>
+            </div>
             <span class="pa">&#8594;</span>
-            <div class="ps"><i>&#9729;</i>AWS Lambda<div class="ps-tip">&lt;15 ms warm · &lt;100 ms cold start</div></div>
+            <div class="ps">
+              <span class="ps-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <path d="M7.5 18h8.7a3.8 3.8 0 0 0 .3-7.6 5.2 5.2 0 0 0-9.8-1.4A3.5 3.5 0 0 0 7.5 18Z"></path>
+                  <path d="M11 9.5l-1.8 5h2l1.2-3.1 1.4 3.1h2.1l-2.2-5"></path>
+                </svg>
+              </span>
+              AWS Lambda
+              <div class="ps-tip">&lt;15 ms warm · &lt;100 ms cold start</div>
+            </div>
             <span class="pa">&#8594;</span>
-            <div class="ps"><i>&#128274;</i>ZTA Enforce<div class="ps-tip">ALLOW/BLOCK · mTLS · IAM · SNS Alert</div></div>
+            <div class="ps">
+              <span class="ps-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <path d="M12 4l6.5 2.8v4.8c0 4.1-2.2 7.2-6.5 8.4C7.7 18.8 5.5 15.7 5.5 11.6V6.8L12 4z"></path>
+                  <path d="M9.2 12.2l1.9 1.9 3.7-4"></path>
+                </svg>
+              </span>
+              ZTA Enforce
+              <div class="ps-tip">ALLOW/BLOCK · mTLS · IAM · SNS Alert</div>
+            </div>
           </div>
 
-          <div class="fig">
+          <div class="fig method-arch">
             <img src="assets/images/architecture-diagram.png" alt="Architecture Diagram"/>
             <div class="fig-cap">Fig. 1 — Serverless Intelligent Firewall system architecture</div>
           </div>
@@ -594,12 +683,12 @@ html,body{width:100%;min-height:100vh;background:#c8c0b8;font-family:var(--font)
             </tbody>
           </table>
 
-          <div class="fig-row">
-            <div class="fig">
+          <div class="fig-row method-mini-row">
+            <div class="fig method-mini">
               <img src="assets/images/accuracy.png" alt="Accuracy Curves"/>
               <div class="fig-cap">Fig. 2 — Training &amp; Validation Accuracy</div>
             </div>
-            <div class="fig">
+            <div class="fig method-mini">
               <img src="assets/images/loss.png" alt="Loss Curves"/>
               <div class="fig-cap">Fig. 3 — Training &amp; Validation Loss</div>
             </div>
@@ -608,7 +697,7 @@ html,body{width:100%;min-height:100vh;background:#c8c0b8;font-family:var(--font)
       </div>
 
       <!-- CENTER BOX 2: Results -->
-      <div class="cbox">
+      <div class="cbox results-box">
         <div class="bh gold-head">Results &amp; Evaluation</div>
         <div class="bb">
           <div class="stats">
@@ -624,7 +713,7 @@ html,body{width:100%;min-height:100vh;background:#c8c0b8;font-family:var(--font)
             <div class="prog-row"><span class="prog-label">CNN</span><div class="prog-bar-bg"><div class="prog-bar-fill" style="width:0" data-w="93%"></div></div><span class="prog-val">93.0%</span></div>
             <div class="prog-row"><span class="prog-label" style="color:var(--gold)">LSTM ★</span><div class="prog-bar-bg"><div class="prog-bar-fill" style="width:0;background:linear-gradient(90deg,var(--crimson),var(--gold))" data-w="98%"></div></div><span class="prog-val" style="color:var(--crimson);font-size:clamp(6px,.72vw,9.5px)">98.0%</span></div>
           </div>
-          <table class="tbl" style="margin-top:4px">
+          <table class="tbl results-summary-table" style="margin-top:3px">
             <thead><tr><th>Model</th><th>Prec.</th><th>Recall</th><th>F1</th></tr></thead>
             <tbody>
               <tr><td>SVM</td><td>84.1%</td><td>77.8%</td><td>80.8%</td></tr>
@@ -645,7 +734,7 @@ html,body{width:100%;min-height:100vh;background:#c8c0b8;font-family:var(--font)
             </div>
           </div>
 
-          <table class="tbl">
+          <table class="tbl results-class-table">
             <thead><tr><th>Class</th><th>Precision</th><th>Recall</th><th>F1</th><th>Correct/Total</th></tr></thead>
             <tbody>
               <tr><td>BENIGN</td><td>0.99</td><td>0.94</td><td>0.96</td><td>9,446 / ~10,000</td></tr>
