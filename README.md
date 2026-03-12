@@ -146,7 +146,7 @@ The stateful and transient nature of serverless computing environments presents 
 > 4. Receive the password from the author
 
 The abstract is always public. The 40-page report and interactive poster are **open to all**.
-The poster PDF now downloads directly from a live-rendered export of the poster, and the poster source pack includes the final PDF, a high-resolution PNG, and the Publisher template used for manual reconstruction.
+The poster PDF now downloads directly from a live-rendered export of the poster, and the poster source pack includes the final PDF, a high-resolution PNG, and the final Publisher source file used for manual editing.
 
 ---
 
