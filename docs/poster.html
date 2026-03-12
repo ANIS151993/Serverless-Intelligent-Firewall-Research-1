@@ -397,7 +397,7 @@ html,body{width:100%;min-height:100vh;background:#c8c0b8;font-family:var(--font)
 <body>
 
 <!-- Download button -->
-<button class="dl-fab" onclick="openGate()">&#128424; Save Poster as PDF</button>
+<button class="dl-fab" onclick="openGate()">&#11015; Download Poster PDF</button>
 
 <!-- ═══════ GATE MODAL ═══════ -->
 <div id="dl-overlay" class="dl-overlay dl-hidden" role="dialog" aria-modal="true">
@@ -406,7 +406,7 @@ html,body{width:100%;min-height:100vh;background:#c8c0b8;font-family:var(--font)
     <div class="dl-hdr">
       <span class="dl-icon">&#128274;</span>
       <h2 class="dl-title">Poster Export Access</h2>
-      <p class="dl-sub">Complete all three steps to save the full poster as PDF or download the Publisher template.</p>
+      <p class="dl-sub">Complete all three steps to download the full poster PDF or the poster source pack.</p>
     </div>
 
     <div class="dl-step" id="dl-s1">
@@ -436,7 +436,7 @@ html,body{width:100%;min-height:100vh;background:#c8c0b8;font-family:var(--font)
         <input type="password" id="dl-pw-inp" class="dl-inp"
                placeholder="Enter access password…"
                onkeydown="if(event.key==='Enter') dlCheck()"/>
-        <button class="dl-btn-p" onclick="dlCheck()">&#128275; Unlock Poster Options</button>
+        <button class="dl-btn-p" onclick="dlCheck()">&#128275; Unlock &amp; Download</button>
       </div>
       <p id="dl-err" class="dl-err dl-hidden">Incorrect password. Please check your email and try again.</p>
     </div>
@@ -444,10 +444,10 @@ html,body{width:100%;min-height:100vh;background:#c8c0b8;font-family:var(--font)
     <div class="dl-step dl-hidden" id="dl-s-ok">
       <span class="dl-icon" style="text-align:center;display:block">&#9989;</span>
       <h3 class="dl-stitle" style="color:#15803d;text-align:center">Access Granted!</h3>
-      <p class="dl-desc" style="text-align:center">Use your browser print dialog and choose <strong>Save as PDF</strong> for a complete 48&quot;&times;36&quot; poster export.</p>
-      <button type="button" class="dl-btn-p" onclick="savePosterPdf()">&#128424; Print / Save as PDF</button>
-      <a href="assets/papers/SIF-Conference-Poster-Template.pub" download="SIF-Conference-Poster-Template.pub" class="dl-btn-r">&#128190; Download Poster Template (.pub)</a>
-      <p class="dl-note" style="text-align:center">The old bundled poster PDF was incomplete. This export now uses the live poster page so the saved PDF matches the online poster. If your browser shows a <strong>Background graphics</strong> option, keep it enabled.</p>
+      <p class="dl-desc" style="text-align:center">Download starts automatically. If you also need the editable reconstruction assets, use the source pack below.</p>
+      <a id="dl-lnk" href="assets/papers/SIF-Conference-Poster-2026.pdf" download="SIF-Conference-Poster-2026.pdf" class="dl-btn-p">&#11015; Download Poster PDF</a>
+      <a href="assets/papers/SIF-Conference-Poster-Source-Pack.zip" download="SIF-Conference-Poster-Source-Pack.zip" class="dl-btn-r">&#128230; Download Poster Source Pack</a>
+      <p class="dl-note" style="text-align:center">The direct PDF now comes from the live poster render. The source pack includes the final PDF, a high-resolution PNG, and the Publisher template used to rebuild the poster manually.</p>
       <button class="dl-btn-n" onclick="closeGate()">Close</button>
     </div>
 
@@ -757,19 +757,17 @@ html,body{width:100%;min-height:100vh;background:#c8c0b8;font-family:var(--font)
 <script>
 const H="5b484d8b2799daf74779ce686501847d4a08b5e917c1e8395e1da7f7e73bce0d";
 async function sha256(m){const b=new TextEncoder().encode(m);const h=await crypto.subtle.digest('SHA-256',b);return Array.from(new Uint8Array(h)).map(x=>x.toString(16).padStart(2,'0')).join('');}
-function syncPosterForPrint(){document.querySelectorAll('.prog-bar-fill').forEach(el=>{el.style.width=el.dataset.w||'0';});}
+function syncPosterVisuals(){document.querySelectorAll('.prog-bar-fill').forEach(el=>{el.style.width=el.dataset.w||'0';});}
 function openGate(){document.getElementById('dl-overlay').classList.remove('dl-hidden');document.body.style.overflow='hidden';dlGo(1);}
 function closeGate(){document.getElementById('dl-overlay').classList.add('dl-hidden');document.body.style.overflow='';dlGo(1);const e=document.getElementById('dl-err');if(e)e.classList.add('dl-hidden');const i=document.getElementById('dl-pw-inp');if(i){i.value='';i.classList.remove('shake');}}
 function dlGo(n){['dl-s1','dl-s2','dl-s3','dl-s-ok'].forEach(id=>{const el=document.getElementById(id);if(el)el.classList.add('dl-hidden');});const t=document.getElementById(n==='ok'?'dl-s-ok':'dl-s'+n);if(t)t.classList.remove('dl-hidden');[1,2,3].forEach(i=>{const d=document.getElementById('dd'+i);if(d)d.classList.toggle('on',i===n);});}
-function savePosterPdf(){syncPosterForPrint();window.print();}
-async function dlCheck(){const i=document.getElementById('dl-pw-inp');const e=document.getElementById('dl-err');const h=await sha256(i.value.trim());if(h===H){e.classList.add('dl-hidden');dlGo('ok');}else{e.classList.remove('dl-hidden');i.classList.remove('shake');void i.offsetWidth;i.classList.add('shake');i.focus();}}
+async function dlCheck(){const i=document.getElementById('dl-pw-inp');const e=document.getElementById('dl-err');const h=await sha256(i.value.trim());if(h===H){e.classList.add('dl-hidden');dlGo('ok');setTimeout(()=>{const l=document.getElementById('dl-lnk');if(l)l.click();},600);}else{e.classList.remove('dl-hidden');i.classList.remove('shake');void i.offsetWidth;i.classList.add('shake');i.focus();}}
 document.addEventListener('click',e=>{if(e.target===document.getElementById('dl-overlay'))closeGate();});
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeGate();});
-window.addEventListener('beforeprint',syncPosterForPrint);
 document.addEventListener('DOMContentLoaded',()=>{
   if(window.location.hash==='#download')openGate();
   // Animate progress bars after short delay
-  setTimeout(syncPosterForPrint,400);
+  setTimeout(syncPosterVisuals,400);
   // Animate stat counters
   document.querySelectorAll('.sv').forEach(el=>{
     const target=parseFloat(el.textContent);
