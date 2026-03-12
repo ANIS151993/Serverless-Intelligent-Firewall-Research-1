@@ -146,6 +146,7 @@ The stateful and transient nature of serverless computing environments presents 
 > 4. Receive the password from the author
 
 The abstract is always public. The 40-page report and interactive poster are **open to all**.
+The poster now exports through the browser print dialog so the saved PDF matches the live poster, and the CG 2026 Publisher template is also downloadable from the site.
 
 ---
 
@@ -160,7 +161,7 @@ The abstract is always public. The 40-page report and interactive poster are **o
 │   ├── styles.css / script.js    # Styling and interactivity
 │   └── assets/
 │       ├── images/               # All result figures
-│       └── papers/               # Password-protected PDFs
+│       └── papers/               # Downloadable PDFs and poster template assets
 ├── intelligent-firewall-AI-Model/# AI model (notebooks, lambda, Docker)
 ├── main.tex                      # IEEE LaTeX source
 ├── Bibliography.bib              # BibTeX references

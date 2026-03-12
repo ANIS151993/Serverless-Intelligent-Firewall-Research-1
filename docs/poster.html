@@ -43,11 +43,7 @@ html,body{width:100%;min-height:100vh;background:#c8c0b8;font-family:var(--font)
 
 /* ── BACKGROUND (full poster) ────────────────────────── */
 .poster-bg{
-  position:absolute;inset:0;
-  background-image:url('assets/images/poster-bg.jpg');
-  background-size:100% 100%;
-  background-repeat:no-repeat;
-  z-index:0;
+  position:absolute;inset:0;width:100%;height:100%;object-fit:fill;z-index:0;
 }
 
 /* Everything above the background */
@@ -301,6 +297,7 @@ html,body{width:100%;min-height:100vh;background:#c8c0b8;font-family:var(--font)
   text-align:center;width:100%;
 }
 .dl-btn-r:hover{background:var(--crimson);color:#fff}
+.dl-note{font-size:9pt;color:#666;line-height:1.5;margin:0}
 .dl-div{display:flex;align-items:center;gap:9px;color:#aaa;font-size:9pt;margin:1px 0}
 .dl-div::before,.dl-div::after{content:'';flex:1;height:1px;background:#e2e8f0}
 .dl-pw{display:flex;flex-direction:column;gap:7px}
@@ -385,17 +382,22 @@ html,body{width:100%;min-height:100vh;background:#c8c0b8;font-family:var(--font)
 
 /* ── PRINT ───────────────────────────────────────────── */
 @media print{
-  @page{size:48in 36in landscape;margin:0}
+  @page{size:48in 36in;margin:0}
   .dl-fab,.dl-overlay{display:none!important}
-  html,body{background:#fff}
-  .poster{box-shadow:none;max-width:none;width:100%;aspect-ratio:4/3}
+  html,body{
+    width:48in;height:36in;margin:0;padding:0;overflow:hidden;background:#fff;
+  }
+  .poster{
+    box-shadow:none;max-width:none;width:48in;height:36in;margin:0;
+    aspect-ratio:auto;overflow:hidden;break-inside:avoid;page-break-inside:avoid;
+  }
 }
 </style>
 </head>
 <body>
 
 <!-- Download button -->
-<button class="dl-fab" onclick="openGate()">&#11015; Download Poster PDF</button>
+<button class="dl-fab" onclick="openGate()">&#128424; Save Poster as PDF</button>
 
 <!-- ═══════ GATE MODAL ═══════ -->
 <div id="dl-overlay" class="dl-overlay dl-hidden" role="dialog" aria-modal="true">
@@ -403,8 +405,8 @@ html,body{width:100%;min-height:100vh;background:#c8c0b8;font-family:var(--font)
     <button class="dl-close" onclick="closeGate()">&times;</button>
     <div class="dl-hdr">
       <span class="dl-icon">&#128274;</span>
-      <h2 class="dl-title">Poster Download Access</h2>
-      <p class="dl-sub">Complete all three steps to download the conference poster PDF.</p>
+      <h2 class="dl-title">Poster Export Access</h2>
+      <p class="dl-sub">Complete all three steps to save the full poster as PDF or download the Publisher template.</p>
     </div>
 
     <div class="dl-step" id="dl-s1">
@@ -427,14 +429,14 @@ html,body{width:100%;min-height:100vh;background:#c8c0b8;font-family:var(--font)
       <div class="dl-badge">Step 3 of 3</div>
       <h3 class="dl-stitle">&#128273; Enter Access Password</h3>
       <p class="dl-desc">Request your password via email with GitHub username &amp; YouTube confirmation.</p>
-      <a href="mailto:engr.aanis@gmail.com?subject=Poster%20PDF%20Access%20Request&body=Hello%2C%0A%0AI%20have%20completed%3A%0A1.%20GitHub%20Follow%3A%20%5BYour%20GitHub%20username%5D%0A2.%20YouTube%20Subscribe%3A%20Confirmed%0A%0APlease%20send%20the%20access%20password%20for%20the%20SIF%20Conference%20Poster.%0A%0AThank%20you."
+      <a href="mailto:engr.aanis@gmail.com?subject=Poster%20Export%20Access%20Request&body=Hello%2C%0A%0AI%20have%20completed%3A%0A1.%20GitHub%20Follow%3A%20%5BYour%20GitHub%20username%5D%0A2.%20YouTube%20Subscribe%3A%20Confirmed%0A%0APlease%20send%20the%20access%20password%20for%20the%20SIF%20Conference%20Poster.%0A%0AThank%20you."
          class="dl-btn-r">&#9993; Send Password Request Email</a>
       <div class="dl-div"><span>then enter password below</span></div>
       <div class="dl-pw">
         <input type="password" id="dl-pw-inp" class="dl-inp"
                placeholder="Enter access password…"
                onkeydown="if(event.key==='Enter') dlCheck()"/>
-        <button class="dl-btn-p" onclick="dlCheck()">&#128275; Unlock &amp; Download</button>
+        <button class="dl-btn-p" onclick="dlCheck()">&#128275; Unlock Poster Options</button>
       </div>
       <p id="dl-err" class="dl-err dl-hidden">Incorrect password. Please check your email and try again.</p>
     </div>
@@ -442,8 +444,10 @@ html,body{width:100%;min-height:100vh;background:#c8c0b8;font-family:var(--font)
     <div class="dl-step dl-hidden" id="dl-s-ok">
       <span class="dl-icon" style="text-align:center;display:block">&#9989;</span>
       <h3 class="dl-stitle" style="color:#15803d;text-align:center">Access Granted!</h3>
-      <p class="dl-desc" style="text-align:center">Download starts automatically. Thank you for supporting open research.</p>
-      <a id="dl-lnk" href="assets/papers/SIF-Conference-Poster-2026.pdf" download class="dl-btn-p">&#11015; Download Poster PDF</a>
+      <p class="dl-desc" style="text-align:center">Use your browser print dialog and choose <strong>Save as PDF</strong> for a complete 48&quot;&times;36&quot; poster export.</p>
+      <button type="button" class="dl-btn-p" onclick="savePosterPdf()">&#128424; Print / Save as PDF</button>
+      <a href="assets/papers/SIF-Conference-Poster-Template.pub" download="SIF-Conference-Poster-Template.pub" class="dl-btn-r">&#128190; Download Poster Template (.pub)</a>
+      <p class="dl-note" style="text-align:center">The old bundled poster PDF was incomplete. This export now uses the live poster page so the saved PDF matches the online poster. If your browser shows a <strong>Background graphics</strong> option, keep it enabled.</p>
       <button class="dl-btn-n" onclick="closeGate()">Close</button>
     </div>
 
@@ -459,7 +463,7 @@ html,body{width:100%;min-height:100vh;background:#c8c0b8;font-family:var(--font)
      POSTER
 ═══════════════════════════════════════════════════════════ -->
 <div class="poster">
-  <div class="poster-bg"></div>
+  <img class="poster-bg" src="assets/images/poster-bg.jpg" alt="" aria-hidden="true"/>
 
   <!-- ── HEADER ── -->
   <div class="hdr">
@@ -753,20 +757,19 @@ html,body{width:100%;min-height:100vh;background:#c8c0b8;font-family:var(--font)
 <script>
 const H="5b484d8b2799daf74779ce686501847d4a08b5e917c1e8395e1da7f7e73bce0d";
 async function sha256(m){const b=new TextEncoder().encode(m);const h=await crypto.subtle.digest('SHA-256',b);return Array.from(new Uint8Array(h)).map(x=>x.toString(16).padStart(2,'0')).join('');}
+function syncPosterForPrint(){document.querySelectorAll('.prog-bar-fill').forEach(el=>{el.style.width=el.dataset.w||'0';});}
 function openGate(){document.getElementById('dl-overlay').classList.remove('dl-hidden');document.body.style.overflow='hidden';dlGo(1);}
 function closeGate(){document.getElementById('dl-overlay').classList.add('dl-hidden');document.body.style.overflow='';dlGo(1);const e=document.getElementById('dl-err');if(e)e.classList.add('dl-hidden');const i=document.getElementById('dl-pw-inp');if(i){i.value='';i.classList.remove('shake');}}
 function dlGo(n){['dl-s1','dl-s2','dl-s3','dl-s-ok'].forEach(id=>{const el=document.getElementById(id);if(el)el.classList.add('dl-hidden');});const t=document.getElementById(n==='ok'?'dl-s-ok':'dl-s'+n);if(t)t.classList.remove('dl-hidden');[1,2,3].forEach(i=>{const d=document.getElementById('dd'+i);if(d)d.classList.toggle('on',i===n);});}
-async function dlCheck(){const i=document.getElementById('dl-pw-inp');const e=document.getElementById('dl-err');const h=await sha256(i.value.trim());if(h===H){e.classList.add('dl-hidden');dlGo('ok');setTimeout(()=>{const l=document.getElementById('dl-lnk');if(l)l.click();},600);}else{e.classList.remove('dl-hidden');i.classList.remove('shake');void i.offsetWidth;i.classList.add('shake');i.focus();}}
+function savePosterPdf(){syncPosterForPrint();window.print();}
+async function dlCheck(){const i=document.getElementById('dl-pw-inp');const e=document.getElementById('dl-err');const h=await sha256(i.value.trim());if(h===H){e.classList.add('dl-hidden');dlGo('ok');}else{e.classList.remove('dl-hidden');i.classList.remove('shake');void i.offsetWidth;i.classList.add('shake');i.focus();}}
 document.addEventListener('click',e=>{if(e.target===document.getElementById('dl-overlay'))closeGate();});
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeGate();});
+window.addEventListener('beforeprint',syncPosterForPrint);
 document.addEventListener('DOMContentLoaded',()=>{
   if(window.location.hash==='#download')openGate();
   // Animate progress bars after short delay
-  setTimeout(()=>{
-    document.querySelectorAll('.prog-bar-fill').forEach(el=>{
-      el.style.width=el.dataset.w||'0';
-    });
-  },400);
+  setTimeout(syncPosterForPrint,400);
   // Animate stat counters
   document.querySelectorAll('.sv').forEach(el=>{
     const target=parseFloat(el.textContent);
